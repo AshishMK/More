@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data class="DMListItemBinding">
+
+        <import type="android.view.View" />
+
+        <variable
+            name="contentViewHolder"
+            type="com.example.more.ui.adapter.DMListAdapter.ViewHolder" />
+
+        <variable
+            name="content"
+            type="com.tonyodev.fetch2.Download" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:onClick="@{ ()-> contentViewHolder.onItemClick(content)}"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/logo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/alpha_circle_background"
+            android:cropToPadding="true"
+            android:padding="2dp"
+            android:visibility="@{content.status == content.status.COMPLETED || content.status == content.status.CANCELLED|| content.status == content.status.FAILED ? View.VISIBLE : View.INVISIBLE}"
+            app:FBImage="@{content}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_file_download_black_24dp" />
+
+        <com.white.progressview.CircleProgressView
+            android:id="@+id/circle_progress_normal"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:progress="@{content.progress}"
+            android:visibility="@{content.status == content.status.ADDED|| content.status == content.status.DOWNLOADING|| content.status == content.status.QUEUED ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:progressNormalSize="2dp"
+            app:progressReachSize="2dp"
+            android:padding="8dp"
+            app:progressStyle="Normal"
+            app:progressReachColor="#fff"
+            app:progressNormalColor="#35ffffff"
+            app:progressTextColor="#fff"
+            app:radius="22dp" />
+
+        <ImageView
+            android:id="@+id/cancel"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:cropToPadding="true"
+            android:onClick="@{ ()-> contentViewHolder.onItemClick(content,true)}"
+            android:padding="4dp"
+            android:scaleType="center"
+            android:visibility="@{content.status == content.status.ADDED || content.status == content.status.DOWNLOADING|| content.status == content.status.QUEUED ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_clear_black_24dp" />
+
+        <ImageView
+            android:id="@+id/redownload"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:cropToPadding="true"
+            android:onClick="@{ ()-> contentViewHolder.onItemClick(content,false)}"
+            android:padding="4dp"
+            android:scaleType="center"
+            android:visibility="@{content.status == content.status.COMPLETED || content.status == content.status.CANCELLED|| content.status == content.status.FAILED ? View.GONE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_refresh_black_24dp" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:ellipsize="end"
+            android:fontFamily="casual"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="@{(content.file.substring(content.file.lastIndexOf(`/`)+1,content.file.length()))}"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/guideline3"
+            app:layout_constraintLeft_toRightOf="@+id/logo" />
+
+        <TextView
+            android:id="@+id/dated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:ellipsize="end"
+            android:fontFamily="casual"
+            android:gravity="top"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="@{content.status == content.status.COMPLETED ? @string/fb_downloaded : (content.status == content.status.CANCELLED ? @string/fb_canceled : (content.status == content.status.FAILED ? @string/fb_failed : @string/fb_none)) }"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@+id/logo"
+            app:layout_constraintTop_toBottomOf="@+id/guideline3" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

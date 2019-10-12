@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data class="SearchItemBinding">
+        <import type="android.view.View" />
+
+        <variable
+            name="contentViewHolder"
+            type="com.example.more.ui.adapter.SearchListAdapter.ViewHolder" />
+
+        <variable
+            name="content"
+            type="com.example.more.data.local.entity.SearchEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingLeft="16dp"
+        android:onClick="@{contentViewHolder::searchClicked}"
+        >
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="20dp"
+            android:background="#15000000"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/search_icon"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_height="wrap_content"
+            android:tint="#60000000"
+            android:tintMode="src_in"
+            android:visibility="@{content.id == -1 ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#000"
+            app:srcCompat="@drawable/ic_search_black_24dp" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif"
+            android:maxLines="1"
+            android:textColor="@{content.id == -1 ? @color/textColorSecondary : @color/textColorPrimary}"
+            android:text="@{content.tag}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+            android:typeface="serif"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/search_icon"
+            app:layout_constraintRight_toLeftOf="@+id/history_icon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/history_icon"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:rotation="45"
+            android:paddingRight="10dp"
+            android:scaleType="center"
+            android:tint="#80000000"
+            android:tintMode="src_in"
+            android:onClick="@{contentViewHolder::editClicked}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="@{content.id == -1 ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data class="DialogItemBinding">
+
+        <variable
+            name="contentViewHolder"
+            type="com.example.more.utills.AlertDialogProvider.ListViewHolder" />
+
+        <variable
+            name="content"
+            type="java.lang.String" />
+
+        <variable
+            name="position"
+            type="java.lang.Integer" />
+
+        <variable
+            name="src"
+            type="java.lang.Integer" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="?attr/selectableItemBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{ ()-> contentViewHolder.onItemClick(position)}"
+
+        >
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="48dp"
+            android:src="@{src}"
+            android:layout_height="48dp"
+            android:layout_marginTop="0dp"
+            android:scaleType="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/title"
+            app:layout_constraintTop_toTopOf="parent"
+             />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:ellipsize="end"
+            android:typeface="sans"
+            android:gravity="left|center_vertical"
+            android:fontFamily="sans-seri"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:textColor="#303030"
+            android:text="@{content}"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/logo"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

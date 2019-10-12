@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--4d74a6-->
+    <color name="colorPrimary">#1f91cf</color>
+    <color name="colorPrimary_alpha">#901f91cf</color>
+    <color name="colorPrimaryDark">#1f91cf</color>
+    <color name="colorPrimaryButton">#1B82B9</color>
+    <color name="colorAccent">#1f91cf</color>
+
+    <color name="textColorPrimary">#000000</color>
+    <color name="textColorHint">#938080</color>
+    <color name="textColorSecondary">#888888</color>
+    <color name="yellow_bg">#fcc73a</color>
+    <color name="white_bg_oval">#9affffff</color>
+    <color name="white">#ffffff</color>
+    <color name="orange">#FEA400</color>
+</resources>

@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.more.ui.activity.HomeActivity">
+    <item
+        android:id="@+id/action_dm"
+        android:icon="@drawable/ic_import_export_black_24dp"
+        android:orderInCategory="100"
+        android:title="@string/dm"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_edit"
+        android:icon="@drawable/ic_mode_edit_black_24dp"
+        android:title="@string/copy_url"
+        app:showAsAction="always" />
+</menu>

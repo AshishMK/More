@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data class="AlertDialogBinding">
+
+        <import type="android.view.View" />
+
+        <variable
+            name="preferenceStorage"
+            type="com.example.more.data.local.pref.PreferencesStorage" />
+
+        <variable
+            name="content"
+            type="com.example.more.utills.AlertDialogProvider" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="40dp"
+        android:background="@drawable/custom_dialog_border"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="@{content.title}"
+            android:textColor="#303030"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:visibility="visible"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvmessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:fontFamily="sans-serif"
+            android:text="@{content.message}"
+            android:textColor="#303030"
+            android:textSize="14sp"
+            android:typeface="sans"
+            android:visibility="@{(content.dialog_type == content.TYPE_NORMAL ? View.VISIBLE: View.GONE)}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+
+            />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/dont_show_again"
+            android:textColor="#303030"
+            android:typeface="sans"
+            android:visibility="@{(content.dialog_type == content.TYPE_NORMAL_DONT ? (((Boolean)preferenceStorage.readValue(@string/dont_show_again_notif,false))?View.VISIBLE:View.GONE):View.GONE)}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvmessage" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:background="@null"
+            android:fontFamily="sans-serif"
+            android:hint="@string/copy_fb_link"
+            android:text="@{content.message}"
+            android:textColor="#303030"
+            android:textSize="14sp"
+            android:typeface="sans"
+            android:visibility="@{(content.dialog_type == content.TYPE_EDIT || content.dialog_type == content.TYPE_EDIT_LINK ? View.VISIBLE:View.GONE)}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:clickable="true"
+            android:paddingBottom="8dp"
+            android:visibility="@{(content.dialog_type == content.TYPE_LIST ? View.VISIBLE:View.GONE)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="tvmessage,checkBox,editText" />
+
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/selectableItemBackground"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:onClick="@{content::onDialogCancel}"
+            android:text="@string/cancel"
+            android:textAllCaps="true"
+
+            android:textColor="@color/colorPrimaryButton"
+            android:textSize="13sp"
+            android:typeface="sans"
+            android:visibility="@{(content.dialog_type == content.TYPE_LIST ? View.GONE: View.VISIBLE)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/guideline5"
+            app:layout_constraintTop_toBottomOf="@+id/barrier" />
+
+        <TextView
+
+            android:id="@+id/ok"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/selectableItemBackground"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:onClick="@{content::onDialogOk}"
+            android:text="@string/ok"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimaryButton"
+            android:textSize="13sp"
+            android:typeface="sans"
+            android:visibility="@{(content.dialog_type == content.TYPE_LIST ? View.GONE: View.VISIBLE)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/guideline5"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/barrier" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

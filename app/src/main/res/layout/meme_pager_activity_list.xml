@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data class="MemePagerActivityBinding">
+
+        <import type="android.view.View" />
+
+        <variable
+            name="preferenceStorage"
+            type="com.example.more.data.local.pref.PreferencesStorage" />
+
+        <variable
+            name="isFileExists"
+            type="Boolean" />
+
+        <variable
+            name="handler"
+            type="com.example.more.ui.interfaces.MemePagerActivityHandler" />
+
+        <variable
+            name="content"
+            type="com.tonyodev.fetch2.Download" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <com.example.more.utills.ui.VerticalViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:transitionName="@string/image_transaction" />
+
+
+        <ImageView
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/selectableItemBackground"
+            android:onClick="@{() -> handler.onClickDownload(content)}"
+            android:scaleType="center"
+            android:src="@{isFileExists ?@drawable/ic_share_black_24dp : (content == null ? @drawable/ic_file_download_black_24dp :(content.status == content.status.COMPLETED ?@drawable/ic_share_black_24dp : @drawable/ic_file_download_black_24dp))}"
+            android:tint="#fff"
+            android:visibility="@{content == null?View.VISIBLE : (content.status == content.status.COMPLETED || content.status == content.status.CANCELLED|| content.status == content.status.FAILED ? View.VISIBLE : View.INVISIBLE)}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/selectableItemBackground"
+            android:onClick="@{ handler::onBackClick}"
+            android:scaleType="center"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:tint="#fff"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.white.progressview.CircleProgressView
+            android:id="@+id/circle_progress_normal"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:progress="@{content == null? 0: content.progress}"
+            android:visibility="@{content == null?View.GONE : (content.status == content.status.ADDED|| content.status == content.status.DOWNLOADING|| content.status == content.status.QUEUED ? View.VISIBLE : View.GONE)}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:progressNormalColor="#35ffffff"
+            app:progressNormalSize="2dp"
+            app:progressReachColor="#fff"
+            app:progressReachSize="2dp"
+            app:progressStyle="Normal"
+            app:progressTextColor="#fff"
+            app:radius="22dp" />
+
+        <com.example.more.utills.animation.AVLoadingIndicatorView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="4dp"
+            android:onClick="@{handler::onTipClicked}"
+            android:visibility="@{ ((Boolean)preferenceStorage.readValue(@string/show_scroll_pref,true)) ? View.VISIBLE : View.GONE}"
+            app:indicator="BallScaleMultiple"
+            app:indicator_color="@color/yellow_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

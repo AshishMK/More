@@ -1,0 +1,107 @@
+<resources>
+    <string name="silent_notification">Silent Notification</string>
+    <string name="silent_notification_msg">Enable notification with no sound</string>
+    <string name="notification_channel">All Notification</string>
+    <string name="notification_channel_msg">Enable All Notification for the app</string>
+    <string name="fb_downloaded">Downloaded</string>
+    <string name="fb_failed">Failed</string>
+    <string name="fb_none">Downloading</string>
+    <string name="fb_canceled">Canceled</string>
+    <string name="waiting_for_network"> Waiting for Network</string>
+    <string name="app_name">Mystic</string>
+    <string name="error_downloading">Download Error</string>
+    <string name="loading">Loading...</string>
+    <string name="percent_progress">%1$d%%</string>
+    <string name="loading_more">Loading More Items</string>
+    <string name="downloading">Downloading…</string>
+    <string name="download_canceled">Download Canceled</string>
+    <string name="video_downloaded">Video Downloaded</string>
+    <string name="download_video">Download Video?</string>
+    <string name="download_video_msg">Tap Ok to download video, Cancel to continue to watch video.</string>
+    <string name="photo_downloaded">Photo Downloaded</string>
+    <string name="action_settings">Settings</string>
+    <string name="dm">Downloads</string>
+    <string name="copy_url">Copy Link</string>
+    <string name="copy">Copy</string>
+    <string name="notif_deactivate_message">Do you really want to silent the notification?</string>
+    <string name="dont_show_again">Do not show this message again</string>
+    <string name="dont_show_again_notif">dont_show_again_notif</string>
+    <string name="not_downloaded">Video has not downloaded yet</string>
+    <string name="facebook">FB Video Downloader</string>
+    <string name="copy_msg">Long press to copy</string>
+    <string name="copy_fb_link">Paste video link here</string>
+    <string name="invalid_link">Invalid link</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="whatsapp_title">Whatsapp Status</string>
+    <string name="scan">QR &amp; Bar </string>
+    <string name="refresh">Refresh</string>
+    <string name="drag_text">Image Text</string>
+    <string name="fb_download">Download</string>
+    <string name="help_email_title">Send email</string>
+    <string name="help_subject">Need help %1$s version %2$s</string>
+    <string name="help_mail">ashish.nautiyal102@gmail.com</string>
+    <string name="notif_fact">Here is a new fact for you.\nLet\'s gain some knowledge</string>
+    <string name="notif_quote">A refreshing quote has arrived.\nLet\'s feel it.</string>
+    <string name="notif_meme">A new meme is waiting for you.\nLet\'s read it out.</string>
+    <string name="notif_video">A new interesting video is here.\nLet\'s amazed by it.</string>
+    <string name="status">Status</string>
+    <string name="notification">Notification</string>
+    <string name="other">Other</string>
+    <string name="help">Help</string>
+    <string name="credits">Credits</string>
+    <string name="img_credits">Image Credit: %1$s</string>
+    <string name="fact_notification">Fact</string>
+    <string name="list_transaction">LIST_TRANSACTION</string>
+    <string name="image_transaction">IMAGE_TRANSACTION</string>
+    <string name="title_transaction">TITLE_TRANSACTION</string>
+    <string name="description_transaction">DESCRIPTION_TRANSACTION</string>
+    <string name="quote_notification">Quote</string>
+    <string name="meme_notification">Meme</string>
+    <string name="status_notification">notification_status</string>
+    <string name="movie_notification">Movie</string>
+    <plurals name="fact">
+        <item quantity="one">Fact</item>
+        <item quantity="other">Facts</item>
+    </plurals>
+    <plurals name="quote">
+        <item quantity="one">Quote</item>
+        <item quantity="other">Quotes</item>
+    </plurals>
+    <string name="search_hint">Search e.g. love, funny</string>
+    <string name="tapReload">Tap to refresh</string>
+    <plurals name="meme">
+        <item quantity="one">Meme</item>
+        <item quantity="other">Memes</item>
+    </plurals>
+    <plurals name="media">
+        <item quantity="one">Media</item>
+        <item quantity="other">Videos</item>
+    </plurals>
+    <string name="show_scroll_pref">show_scroll_pref</string>
+    <string name="no_item_found">Sorry!! No content found</string>
+    <string name="no_connection">Offline!! Please check your connection</string>
+    <string name="download_location">Download Location</string>
+    <string name="already_downloaded">"Already Downloaded"</string>
+    <string name="download_app">Share via View More. Please download at</string>
+    <string name="location">Location %1$s</string>
+    <string name="whats_app_head_message">All files are downloaded at \"%1$s\".\n\nIf you didn\'t found any status please watch them on WhatsApp firstly.</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+    <string name="low_storage_error">Ocr dependencies cannot be downloaded due to low device storage</string>
+    <string name="ocr_header">Click &quot;Detect Text&quot; to detect text</string>
+    <string name="read_text">Detect Text</string>
+    <string name="no_more_item">No more item to show</string>
+    <string name="auto_focus">Auto Focus</string>
+    <string name="use_flash">Use Flash</string>
+    <string name="ocr_success">Text read successfully</string>
+    <string name="success">Complete</string>
+    <string name="ocr_failure">No text captured</string>
+    <string name="ocr_error">"Error reading text: %1$s"</string>
+    <string name="error">"Error: "</string>
+    <string-array name="scan_options">
+        <item>Gallery</item>
+        <item>Camera</item>
+    </string-array>
+</resources>

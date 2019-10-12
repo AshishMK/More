@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data class="ListFragmentBinding">
+
+        <import type="android.view.View" />
+        <import type="android.view.Gravity" />
+        <variable
+            name="status"
+            type="com.example.more.data.Status" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".ui.fragment.ListFragment">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:layoutAnimation="@anim/layout_animation_fall_down"
+            android:paddingTop="0dp"
+            android:visibility="@{status == status.SUCCESS ? View.VISIBLE : View.GONE }" >
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <!-- TODO: Update blank fragment layout -->
+        <include
+            android:id="@+id/loading_layout"
+            layout="@layout/loading_layout"
+            app:status="@{status}" />
+
+    </FrameLayout>
+</layout>
