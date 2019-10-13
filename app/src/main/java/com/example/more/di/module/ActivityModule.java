@@ -2,6 +2,7 @@ package com.example.more.di.module;
 
 import com.example.more.ui.activity.CodeScanActivity;
 import com.example.more.ui.activity.DownloadManagerActivity;
+import com.example.more.ui.activity.HomeActivity;
 import com.example.more.ui.activity.ListActivity;
 import com.example.more.ui.activity.MemePagerActivity;
 import com.example.more.ui.activity.SearchActivity;

@@ -26,6 +26,7 @@ import com.example.more.ui.activity.DetailActivity;
 import com.example.more.ui.activity.ListActivity;
 import com.example.more.ui.activity.MemePagerActivity;
 import com.example.more.ui.activity.YoutubePlayer;
+import com.example.more.utills.Utils;
 import com.example.more.utills.animation.AnimUtil;
 import com.example.more.utills.animation.TransitionHelper;
 
@@ -119,6 +120,7 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
                 gridItemBinding.setVariable(BR.content, content);
                 return;
             }
+
             listItemBinding.setVariable(BR.contentViewHolder, holder);
             listItemBinding.setVariable(BR.content, content);
 

@@ -25,14 +25,28 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/ADMOB_APP_BANNER_ID"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintLeft_toLeftOf="parent"
+            ads:layout_constraintRight_toRightOf="parent" />
 
         <com.example.more.utills.ui.VerticalViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:transitionName="@string/image_transaction" />
+            android:layout_height="0dp"
+            android:paddingTop="?attr/actionBarSize"
+            android:transitionName="@string/image_transaction"
+            app:layout_constraintBottom_toTopOf="@+id/adView"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <ImageView

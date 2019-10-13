@@ -1,6 +1,8 @@
 package com.example.more.utills;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,16 +10,19 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.AudioAttributes;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 import android.webkit.MimeTypeMap;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -26,6 +31,16 @@ import androidx.fragment.app.Fragment;
 
 import com.example.more.Application.AppController;
 import com.example.more.R;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.formats.UnifiedNativeAd;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 import java.io.File;
 
@@ -33,6 +48,8 @@ import java.io.File;
  * Class to provide application related all utilities
  */
 public class Utils {
+
+    public static final String ADMOB_TEST_DEVICE = "90DE0FF5D1BEB82ACBE8518D057B6FA5";
 
     /**
      * Method to provide mime type of a file provided by file uri
@@ -160,9 +177,11 @@ public class Utils {
         AppController.getInstance().startActivity(Intent.createChooser(sendIntent, AppController.getInstance().getString(R.string.help_email_title)));
 
     }
-/**return bitmap from vector drawables
- * ((BitmapDrawable) AppCompatResources.getDrawable(getTarget().getContext(), R.drawable.ic_thin_arrowheads_pointing_down)).getBitmap()
- * */
+
+    /**
+     * return bitmap from vector drawables
+     * ((BitmapDrawable) AppCompatResources.getDrawable(getTarget().getContext(), R.drawable.ic_thin_arrowheads_pointing_down)).getBitmap()
+     */
     public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
         Drawable drawable = ContextCompat.getDrawable(context, drawableId);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -181,6 +200,7 @@ public class Utils {
 
     /**
      * Return the media directory of the application
+     *
      * @return
      */
     public static File getParentFile() {
@@ -229,8 +249,8 @@ public class Utils {
 
     }
 
-    public static void  shareFile(String path){
-        File shareFile = new File( path);
+    public static void shareFile(String path) {
+        File shareFile = new File(path);
         Uri imageUri = FileProvider.getUriForFile(AppController.getInstance(), AppController.getInstance().getPackageName() + ".provider", shareFile);
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
@@ -244,4 +264,90 @@ public class Utils {
     }
 
 
+    /* Create the NotificationChannel, but only on API 26+ because
+    the NotificationChannel class is new and not in the support library
+   */
+    public static void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = AppController.getInstance().getString(R.string.notification_channel);
+            AudioAttributes att = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build();
+            String description = AppController.getInstance().getString(R.string.notification_channel_msg);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel("1", name, importance);
+            AudioAttributes attributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .build();
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = AppController.getInstance().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+
+            //Silent notification channel
+            String NOTIFICATION_CHANNEL_ID = "2";
+            NotificationChannel notificationChannel = new NotificationChannel(
+                    NOTIFICATION_CHANNEL_ID, AppController.getInstance().getString(R.string.silent_notification), NotificationManager.IMPORTANCE_LOW
+            );
+            //Configure the notification channel, NO SOUND
+            notificationChannel.setDescription(AppController.getInstance().getString(R.string.silent_notification_msg));
+            notificationChannel.setSound(null, null);
+            notificationChannel.enableVibration(false);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+    }
+
+    public static void buildInterstitialAd(Activity activity) {
+        if(!AppController.getInstance().enableAd){
+            return;
+        }
+        InterstitialAd mInterstitialAd = new InterstitialAd(activity);
+        mInterstitialAd.setAdUnitId(activity.getString(R.string.ADMOB_APP_INTERSTITIAL_ID));
+        mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice(ADMOB_TEST_DEVICE).build());
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                mInterstitialAd.show();
+            }
+        });
+    }
+
+    public static void buildBannerAD(AdView adView) {
+        if(!AppController.getInstance().enableAd){
+            return;
+        }
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice(ADMOB_TEST_DEVICE).build();
+        adView.loadAd(adRequest);
+    }
+
+
+    public static void buildRewardedAd(Activity activity) {
+        if(!AppController.getInstance().enableAd){
+            return;
+        }
+        RewardedAd rewardedAd = new RewardedAd(activity, activity.getString(R.string.ADMOB_APP_REWARDED_ID));
+        RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
+            @Override
+            public void onRewardedAdLoaded() {
+                // Ad successfully loaded.
+                rewardedAd.show(activity, new RewardedAdCallback() {
+                    @Override
+                    public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+
+                    }
+                });
+            }
+
+
+            @Override
+            public void onRewardedAdFailedToLoad(int errorCode) {
+                // Ad failed to load.
+            }
+        };
+        rewardedAd.loadAd(new AdRequest.Builder().addTestDevice(ADMOB_TEST_DEVICE).build(), adLoadCallback);
+
+    }
 }

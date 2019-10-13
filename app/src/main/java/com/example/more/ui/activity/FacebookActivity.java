@@ -11,6 +11,13 @@ import androidx.databinding.DataBindingUtil;
 import com.example.more.R;
 import com.example.more.databinding.FacebookActivityBinding;
 import com.example.more.ui.fragment.FacebookFragment;
+import com.example.more.utills.Utils;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 
 /**
  * Activity host {@link FacebookFragment} to download facebook videos
@@ -28,8 +35,16 @@ public class FacebookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initialiseView();
+        initAdMob(); 
     }
-
+    /**
+     * Method to initialize admob sdk to show ads
+     */
+    public void initAdMob() {
+        MobileAds.initialize(this, getString(R.string.ADMOB_APP_ID));
+        Utils.buildBannerAD(binding.adView);
+        Utils.buildInterstitialAd(this);
+    }
 
     @Override
     public boolean onSupportNavigateUp() {

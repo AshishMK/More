@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.example.more.factory.ViewModelFactory;
 import com.example.more.ui.fragment.WhatsappStatusFragment;
 import com.example.more.utills.Parser;
 import com.example.more.utills.Utils;
+import com.example.more.utills.animation.AnimUtil;
 import com.example.more.viewmodel.ImageFirebaseViewModel;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -77,6 +79,14 @@ public class CodeScanActivity extends AppCompatActivity {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_code_scan);
+        findViewById(R.id.image).addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                v.removeOnLayoutChangeListener(this);
+                AnimUtil.rotateView(findViewById(R.id.image));
+            }
+        });
+
         getSupportActionBar().hide();
         TASK_CHOICE = getIntent().getIntExtra(TOOL_INTENT_TYPE, TOOL_INTENT_TYPE_SCAN);
         initialiseViewModel();

@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.more.BR;
 import com.example.more.R;
 import com.example.more.databinding.DMListItemBinding;
+import com.example.more.utills.Utils;
 import com.tonyodev.fetch2.Download;
 import com.tonyodev.fetch2.Status;
 
@@ -97,6 +98,10 @@ public class DMListAdapter extends RecyclerView.Adapter<DMListAdapter.ViewHolder
         public void onItemClick(Download content) {
             if (content.getStatus() != Status.COMPLETED) {
                 Toast.makeText(activity, R.string.not_downloaded, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else if(!content.getFile().contains(".mp4")){
+                Utils.shareFile(content.getFile());
                 return;
             }
 

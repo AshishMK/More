@@ -1,4 +1,10 @@
 <resources>
+    <string name="ADMOB_APP_ID">ca-app-pub-1294794800643423~2001044869</string>
+    <string name="ADMOB_APP_BANNER_ID">ca-app-pub-1294794800643423/6818257279</string>
+    <string name="ADMOB_APP_INTERSTITIAL_ID">ca-app-pub-1294794800643423/1673741809</string>
+    <string name="ADMOB_APP_REWARDED_ID">ca-app-pub-1294794800643423/2687440577</string>
+    <string name="ADMOB_APP_NATIVE_ID">ca-app-pub-1294794800643423/6719358382</string>
+
     <string name="silent_notification">Silent Notification</string>
     <string name="silent_notification_msg">Enable notification with no sound</string>
     <string name="notification_channel">All Notification</string>

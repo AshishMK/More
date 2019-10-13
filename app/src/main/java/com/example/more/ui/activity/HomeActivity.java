@@ -1,10 +1,6 @@
 package com.example.more.ui.activity;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.media.AudioAttributes;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +16,9 @@ import com.example.more.databinding.ScrollingActivityBinding;
 import com.example.more.databinding.TabItemBinding;
 import com.example.more.ui.adapter.PagerAdapter;
 import com.example.more.ui.fragment.ContentFragment;
+import com.example.more.utills.Utils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
 
 import static com.example.more.utills.Screen.dp;
 
@@ -32,46 +31,22 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MobileAds.initialize(this);
         AppController.getInstance().checkFCMUpdate();
         initialiseView();
-        createNotificationChannel();
+        initAdMob();
+
     }
 
-
-    /* Create the NotificationChannel, but only on API 26+ because
-     the NotificationChannel class is new and not in the support library
-    */
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.notification_channel);
-            AudioAttributes att = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                    .build();
-            String description = getString(R.string.notification_channel_msg);
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel("1", name, importance);
-            AudioAttributes attributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .build();
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-
-            //Silent notification channel
-            String NOTIFICATION_CHANNEL_ID = "2";
-            NotificationChannel notificationChannel = new NotificationChannel(
-                    NOTIFICATION_CHANNEL_ID, getString(R.string.silent_notification), NotificationManager.IMPORTANCE_LOW
-            );
-            //Configure the notification channel, NO SOUND
-            notificationChannel.setDescription(getString(R.string.silent_notification_msg));
-            notificationChannel.setSound(null, null);
-            notificationChannel.enableVibration(false);
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
+    /**
+     * Method to initialize admob sdk to show ads
+     */
+    public void initAdMob() {
+        MobileAds.initialize(this, getString(R.string.ADMOB_APP_ID));
+        Utils.buildBannerAD(binding.includedLayout.adView);
+        Utils.buildRewardedAd(this);
     }
+
 
     /*
      * Initialising the View using Data Binding
@@ -87,7 +62,7 @@ public class HomeActivity extends AppCompatActivity {
      * Method to configure {@link androidx.viewpager.widget.ViewPager}
      * and {@link com.google.android.material.tabs.TabLayout}
      *
-     * @see  PagerAdapter
+     * @see PagerAdapter
      * <p>
      * Basically we add two {@link ContentFragment} here
      * one for Contents and other for tools

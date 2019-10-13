@@ -17,7 +17,9 @@ import com.example.more.R;
 import com.example.more.data.Status;
 import com.example.more.databinding.ListActivityBinding;
 import com.example.more.ui.fragment.ListFragment;
+import com.example.more.utills.Utils;
 import com.example.more.utills.animation.AnimUtil;
+import com.google.android.gms.ads.MobileAds;
 
 import dagger.android.AndroidInjection;
 
@@ -59,6 +61,15 @@ public class ListActivity extends AppCompatActivity implements ListFragment.OnFr
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         initialiseView();
+        initAdMob();
+    }
+
+    /**
+     * Method to initialize admob sdk to show ads
+     */
+    public void initAdMob() {
+        Utils.buildBannerAD(binding.adView);
+        Utils.buildInterstitialAd(this);
     }
 
 

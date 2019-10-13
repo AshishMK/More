@@ -81,9 +81,16 @@ public class MemePagerActivity extends AppCompatActivity implements MemePagerAct
         super.onCreate(savedInstanceState);
         initialiseView();
         setFetchListener();
+        initAdMob();
     }
 
-
+    /**
+     * Method to initialize admob sdk to show ads
+     */
+    public void initAdMob() {
+        Utils.buildBannerAD(binding.adView);
+        Utils.buildRewardedAd(this);
+    }
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -217,7 +224,7 @@ public class MemePagerActivity extends AppCompatActivity implements MemePagerAct
             map.put(positionDownload, download.getId());
             positionDownload = -1;
         }
-        if (map.get(binding.pager.getCurrentItem()) == download.getId()) {
+        if (map.containsKey(binding.pager.getCurrentItem()) && map.get(binding.pager.getCurrentItem()) == download.getId()) {
             binding.setContent(download);
         }
 

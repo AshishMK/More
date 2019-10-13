@@ -8,6 +8,15 @@
         android:padding="0dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/ADMOB_APP_BANNER_ID"
+            ads:layout_constraintLeft_toLeftOf="parent"
+            ads:layout_constraintRight_toRightOf="parent"
+            ads:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
@@ -15,17 +24,18 @@
             android:layout_height="?attr/actionBarSize"
             android:background="#35ffffff"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:tabIndicatorColor="#45ffffff"
             app:tabIndicator="@drawable/ic_arrow_drop_up_black_24dp"
+            app:tabIndicatorColor="#45ffffff"
 
             />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
-
-            android:layout_height="match_parent"
-            android:layout_marginBottom="?attr/actionBarSize"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintBottom_toTopOf="@+id/tabLayout"
+            app:layout_constraintTop_toBottomOf="@+id/adView"
             app:layout_constraintTop_toTopOf="parent" />
 
 

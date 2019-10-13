@@ -16,6 +16,7 @@ import com.example.more.R;
 import com.example.more.data.local.pref.PreferencesStorage;
 import com.example.more.data.remote.api.ContentApiService;
 import com.example.more.di.AppComponent.DaggerAppComponent;
+import com.example.more.utills.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -84,12 +85,13 @@ public class AppController extends MultiDexApplication implements HasSupportFrag
         return mInstance;
     }
 
+
+    public boolean enableAd = true;
     @Override
     public void onCreate() {
         super.onCreate();
         FirebaseApp.initializeApp(this);
         mInstance = this;
-
         //print logs only in debug mode
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
@@ -100,50 +102,15 @@ public class AppController extends MultiDexApplication implements HasSupportFrag
                 .application(this)
                 .build()
                 .inject(this);
-        createNotificationChannel();
+        Utils.createNotificationChannel();
 
     }
 
-
-    /* Create the NotificationChannel, but only on API 26+ because
-     the NotificationChannel class is new and not in the support library
-    */
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.notification_channel);
-            AudioAttributes att = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                    .build();
-            String description = getString(R.string.notification_channel_msg);
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel("1", name, importance);
-            AudioAttributes attributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .build();
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-
-            //Silent notification channel
-            String NOTIFICATION_CHANNEL_ID = "2";
-            NotificationChannel notificationChannel = new NotificationChannel(
-                    NOTIFICATION_CHANNEL_ID, getString(R.string.silent_notification), NotificationManager.IMPORTANCE_HIGH
-            );
-            //Configure the notification channel, NO SOUND
-            notificationChannel.setDescription(getString(R.string.silent_notification_msg));
-            notificationChannel.setSound(null, null);
-            notificationChannel.enableVibration(false);
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
-    }
 
     /**
      * Method check and update newest FCM token to server if it is not updated yet
      */
-    public void checkFCMUpdate(){
+    public void checkFCMUpdate() {
         //check weather FCM token is not updated to server
         if (!(boolean) (preferenceStorage.readValue(FCM_UPDATED, false))) {
             FirebaseInstanceId.getInstance().getInstanceId()
@@ -175,7 +142,7 @@ public class AppController extends MultiDexApplication implements HasSupportFrag
         contentApiService.insert_fcm(RequestBody.create(MediaType.parse("text/plain"), fcm)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(fcmApiResponse -> {
             preferenceStorage.writeValue(FCM_UPDATED, fcmApiResponse.getResult());
         }, throwable -> {
-          Timber.v(throwable.toString());
+            Timber.v(throwable.toString());
             preferenceStorage.writeValue(FCM_UPDATED, false);
         });
     }

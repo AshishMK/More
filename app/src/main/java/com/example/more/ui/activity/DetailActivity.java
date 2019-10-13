@@ -14,7 +14,9 @@ import com.example.more.R;
 import com.example.more.data.local.entity.ContentEntity;
 import com.example.more.databinding.DetailActivityBinding;
 import com.example.more.utills.AlertDialogProvider;
+import com.example.more.utills.Utils;
 import com.example.more.utills.animation.AnimUtil;
+import com.google.android.gms.ads.MobileAds;
 
 import static com.example.more.utills.AlertDialogProvider.TYPE_EDIT;
 import static com.example.more.utills.AlertDialogProvider.TYPE_NORMAL;
@@ -36,8 +38,16 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initialiseView();
+        initAdMob();
     }
 
+    /**
+     * Method to initialize admob sdk to show ads
+     */
+    public void initAdMob() {
+        Utils.buildBannerAD(binding.adView);
+        Utils.buildInterstitialAd(this);
+    }
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

@@ -16,6 +16,7 @@ import com.example.more.R;
 import com.example.more.databinding.WhatsappStatusAcivityBinding;
 import com.example.more.utills.AlertDialogProvider;
 import com.example.more.utills.Utils;
+import com.google.android.gms.ads.MobileAds;
 
 /**
  * Activity hosts {@link com.example.more.ui.fragment.WhatsappStatusFragment}
@@ -32,6 +33,15 @@ public class WhatsAppStatusActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initialiseView();
+        initAdMob();
+    }
+
+    /**
+     * Method to initialize admob sdk to show ads
+     */
+    public void initAdMob() {
+        Utils.buildBannerAD(binding.adView);
+        Utils.buildInterstitialAd(this);
     }
 
     /*
