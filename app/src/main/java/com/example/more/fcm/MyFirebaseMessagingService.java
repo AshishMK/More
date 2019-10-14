@@ -4,13 +4,11 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,13 +19,17 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.more.Application.AppController;
 import com.example.more.R;
+import com.example.more.data.Resource;
+import com.example.more.data.Status;
+import com.example.more.data.local.dao.ContentDao;
+import com.example.more.data.local.entity.ContentEntity;
 import com.example.more.data.local.entity.NotificationEntity;
 import com.example.more.data.local.pref.PreferencesStorage;
 import com.example.more.data.remote.api.ContentApiService;
-import com.example.more.data.remote.model.FCMApiResponse;
+import com.example.more.data.repository.ServiceRepository;
+import com.example.more.ui.activity.DetailActivity;
 import com.example.more.ui.activity.HomeActivity;
 import com.example.more.ui.activity.ListActivity;
-import com.example.more.ui.fragment.ListFragment;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -37,15 +39,13 @@ import java.util.Date;
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
-import dagger.android.support.AndroidSupportInjection;
-import io.reactivex.functions.Consumer;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 import static androidx.core.app.NotificationCompat.PRIORITY_MAX;
 import static com.example.more.Application.AppController.FCM_UPDATED;
 import static com.example.more.di.module.ApiModule.base_url;
 import static com.example.more.ui.activity.ListActivity.FACT;
+import static com.example.more.ui.activity.ListActivity.MEDIA;
+import static com.example.more.ui.activity.ListActivity.OTD;
 import static com.example.more.ui.activity.ListActivity.QUOTE;
 import static com.example.more.ui.activity.ListActivity.STORY;
 
@@ -56,6 +56,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      */
     @Inject
     PreferencesStorage preferenceStorage;
+    @Inject
+    ContentDao contentDao;
+    @Inject
+    ContentApiService contentApiService;
+
+    private ServiceRepository contentRepository;
 
     @Override
     public void onCreate() {
@@ -88,11 +94,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationEntity.setMedia(remoteMessage.getData().get("media"));
             notificationEntity.setReceivedAt(new Date().getTime());
             ////  contentDao.insertNotification(notificationEntity);
-            System.out.println("jljl");
             if (showNotification(Integer.parseInt(remoteMessage.getData().get("content_type")))) {
-
-            loadMedia(Integer.parseInt(remoteMessage.getData().get("content_type")), remoteMessage.getData().get("media"));
-             }
+                if (Integer.parseInt(remoteMessage.getData().get("content_type")) == 4) {
+                    fetchContent(4, 0, remoteMessage.getData().get("tag"));
+                } else
+                    loadMedia(Integer.parseInt(remoteMessage.getData().get("content_type")), remoteMessage.getData().get("media"), null);
+            }
         }
     }
 
@@ -104,8 +111,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 return (boolean) preferenceStorage.readValue(getString(R.string.quote_notification), true);
             case STORY:
                 return (boolean) preferenceStorage.readValue(getString(R.string.meme_notification), true);
-            default:
+            case OTD:
+                return (boolean) preferenceStorage.readValue(getString(R.string.otd_pref), true);
+            case MEDIA:
                 return (boolean) preferenceStorage.readValue(getString(R.string.movie_notification), true);
+            default:
+                return false;
         }
     }
 
@@ -116,7 +127,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         AppController.getInstance().updateToken(s);
     }
 
-    void loadMedia(int type, String media) {
+    void loadMedia(int type, String media, ContentEntity contentEntity) {
 
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
@@ -126,13 +137,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                                createCustomNotification(type, resource);
+                                createCustomNotification(type, resource, contentEntity);
                             }
 
                             @Override
                             public void onLoadFailed(@Nullable Drawable errorDrawable) {
                                 super.onLoadFailed(errorDrawable);
-                                System.out.println("jamenu e");
                             }
                         });
 
@@ -148,12 +158,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 return this.getString(R.string.notif_quote);
             case 2:
                 return this.getString(R.string.notif_meme);
-            default:
+            case 3:
                 return this.getString(R.string.notif_video);
+            default:
+                return this.getString(R.string.notif_day);
         }
     }
 
-    private void createCustomNotification(int content_type, Bitmap image) {
+    private void createCustomNotification(int content_type, Bitmap image, ContentEntity contentEntity) {
 
         // BEGIN_INCLUDE(notificationCompat)
         String title = getTitle(content_type);
@@ -168,12 +180,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //  stackBuilder.addNextIntent(intent);
         Intent listActivity = new Intent(this, ListActivity.class);
         listActivity.putExtra("content_type", content_type);
+        if (contentEntity != null) {
+            listActivity = new Intent(this, DetailActivity.class);
+            listActivity.putExtra("content", contentEntity);
+        }
         //   stackBuilder.addNextIntent(listActivity);
         //  PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         PendingIntent pendingIntent = PendingIntent.getActivities(this, content_type, new Intent[]{intent, listActivity}, PendingIntent.FLAG_CANCEL_CURRENT);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, (boolean) preferenceStorage.readValue(getString(R.string.status_notification), true)?"1":"2")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, (boolean) preferenceStorage.readValue(getString(R.string.status_notification), true) ? "1" : "2")
                 .setContentIntent(pendingIntent)
                 .setTicker(title)
                 .setSmallIcon(R.drawable.notif)
@@ -199,5 +215,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // END_INCLUDE(notify)
     }
 
+    /**
+     * Fetch content related to has tag from server
+     */
+    public void fetchContent(int contentType, int offset, String tag) {
+        if (contentRepository == null)
+            contentRepository = new ServiceRepository(contentDao, contentApiService);
+        contentRepository.loadContentByTag(contentType, offset, tag)
+                .subscribe(this::handleResponse);
+    }
+
+    void handleResponse(Resource<ContentEntity> contentEntityResponse) {
+        if (contentEntityResponse.data != null && contentEntityResponse.status == Status.SUCCESS) {
+            loadMedia(4, contentEntityResponse.data.getMedia_link(), contentEntityResponse.status == Status.SUCCESS ? contentEntityResponse.data : null);
+        }
+    }
 
 }

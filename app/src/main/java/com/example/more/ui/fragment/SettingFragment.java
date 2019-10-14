@@ -96,6 +96,11 @@ public class SettingFragment extends DaggerFragment implements SettingsFragmentH
     }
 
     @Override
+    public void shareApp(View v) {
+        Utils.shareApplication();
+    }
+
+    @Override
     public void onCreditClickView(View v) {
         Utils.gotoAppCredits();
     }

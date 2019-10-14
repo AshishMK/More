@@ -2,6 +2,7 @@ package com.example.more.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +18,6 @@ import com.example.more.databinding.TabItemBinding;
 import com.example.more.ui.adapter.PagerAdapter;
 import com.example.more.ui.fragment.ContentFragment;
 import com.example.more.utills.Utils;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 
 import static com.example.more.utills.Screen.dp;
@@ -43,8 +43,13 @@ public class HomeActivity extends AppCompatActivity {
      */
     public void initAdMob() {
         MobileAds.initialize(this, getString(R.string.ADMOB_APP_ID));
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Utils.buildRewardedAd(HomeActivity.this);
+            }
+        }, 1000);
         Utils.buildBannerAD(binding.includedLayout.adView);
-        Utils.buildRewardedAd(this);
     }
 
 

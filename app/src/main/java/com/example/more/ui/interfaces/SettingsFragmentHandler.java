@@ -9,6 +9,6 @@ import android.view.View;
  */
 public interface SettingsFragmentHandler {
     public void onHelpClickView(View v);
-
+    public void shareApp(View v);
     public void onCreditClickView(View v);
 }

@@ -1,6 +1,7 @@
 package com.example.more.ui.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +17,6 @@ import com.example.more.databinding.DetailActivityBinding;
 import com.example.more.utills.AlertDialogProvider;
 import com.example.more.utills.Utils;
 import com.example.more.utills.animation.AnimUtil;
-import com.google.android.gms.ads.MobileAds;
 
 import static com.example.more.utills.AlertDialogProvider.TYPE_EDIT;
 import static com.example.more.utills.AlertDialogProvider.TYPE_NORMAL;
@@ -45,9 +45,16 @@ public class DetailActivity extends AppCompatActivity {
      * Method to initialize admob sdk to show ads
      */
     public void initAdMob() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Utils.buildInterstitialAd(DetailActivity.this);
+            }
+
+        }, 1000);
         Utils.buildBannerAD(binding.adView);
-        Utils.buildInterstitialAd(this);
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -90,7 +97,7 @@ public class DetailActivity extends AppCompatActivity {
             alertDialogProvider.show(getSupportFragmentManager(), DetailActivity.class.getName());
 
         } else if (item.getItemId() == R.id.action_credit) {
-            AlertDialogProvider.getInstance(getString(R.string.credits), String.format(getString(R.string.img_credits),((ContentEntity)getIntent().getParcelableExtra("content")).getCredits()), TYPE_NORMAL)
+            AlertDialogProvider.getInstance(getString(R.string.credits), String.format(getString(R.string.img_credits), ((ContentEntity) getIntent().getParcelableExtra("content")).getCredits()), TYPE_NORMAL)
                     .show(getSupportFragmentManager(), DetailActivity.class.getName());
 
         }

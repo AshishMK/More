@@ -6,6 +6,8 @@
 
     <data class="DetailActivityBinding">
 
+
+
         <variable
             name="content"
             type="com.example.more.data.local.entity.ContentEntity" />
@@ -33,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:layout_scrollFlags="scroll|enterAlways"
                 app:titleEnabled="false"
                 app:toolbarId="@+id/toolbar">
 
@@ -61,37 +63,42 @@
                     android:layout_height="?attr/actionBarSize"
                     android:fontFamily="casual"
                     android:gravity="center"
-                    android:text="Today's Fact"
+                    android:text="@{String.format(content.contentType == 4 ? @string/title_detail_day : (content.contentType == 0 ? @string/title_detail_fact : @string/title_detail_quote), content.contentType == 4 ? `` :   content.tag )}"
                     android:textColor="#fff"
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="-8dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|top"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/ADMOB_APP_BANNER_ID"
-            ads:layout_constraintLeft_toLeftOf="parent"
-            ads:layout_constraintRight_toRightOf="parent"
-            ads:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|top"
+                ads:adSize="BANNER"
+                android:elevation="1dp"
+                ads:adUnitId="@string/ADMOB_APP_BANNER_ID"
+                ads:layout_constraintLeft_toLeftOf="parent"
+                ads:layout_constraintRight_toRightOf="parent"
+                ads:layout_constraintTop_toTopOf="parent" />
 
 
-        <include
-            android:id="@+id/contentDetail"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            layout="@layout/content_detail"
-            app:content="@{content}" />
+            <include
+                android:id="@+id/contentDetail"
+                layout="@layout/content_detail"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="56dp"
+                android:layout_height="wrap_content"
+                app:content="@{content}"
+                android:layout_marginTop="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/adView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

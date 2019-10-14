@@ -125,7 +125,7 @@ public class AppController extends MultiDexApplication implements HasSupportFrag
                             // Get new Instance ID token
                             String token = task.getResult().getToken();
 
-                            updateToken(token);     // Log and toast
+                            updateToken(token);
                             Timber.v(token);
                         }
                     });

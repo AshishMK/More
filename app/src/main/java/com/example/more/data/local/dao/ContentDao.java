@@ -25,6 +25,9 @@ public interface ContentDao {
     List<ContentEntity> getContentByTag(int content_type, String tag, int offset);
 
 
+    @Query("SELECT * FROM `ContentEntity` where tag = :tag")
+    ContentEntity getContentByTag(String tag);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long[] insertTags(List<SearchEntity> tags);
 

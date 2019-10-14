@@ -2,10 +2,7 @@ package com.example.more.utills;
 
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
-
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;

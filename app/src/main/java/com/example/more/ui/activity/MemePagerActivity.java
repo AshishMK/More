@@ -1,6 +1,7 @@
 package com.example.more.ui.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
@@ -88,9 +89,15 @@ public class MemePagerActivity extends AppCompatActivity implements MemePagerAct
      * Method to initialize admob sdk to show ads
      */
     public void initAdMob() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Utils.buildRewardedAd(MemePagerActivity.this);
+            }
+        }, 1000);
         Utils.buildBannerAD(binding.adView);
-        Utils.buildRewardedAd(this);
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

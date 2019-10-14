@@ -10,8 +10,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioAttributes;
 import android.media.MediaScannerConnection;
@@ -30,13 +28,12 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.more.Application.AppController;
+import com.example.more.BuildConfig;
 import com.example.more.R;
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
@@ -161,7 +158,6 @@ public class Utils {
         PackageManager pm = AppController.getInstance().getPackageManager();
         PackageInfo pi;
         String subject = AppController.getInstance().getString(R.string.help_subject);
-
         try {
             pi = pm.getPackageInfo(AppController.getInstance().getPackageName(), 0);
             subject = String.format(subject, AppController.getInstance().getString(R.string.app_name), pi.versionName);
@@ -300,12 +296,16 @@ public class Utils {
     }
 
     public static void buildInterstitialAd(Activity activity) {
-        if(!AppController.getInstance().enableAd){
+        if (!AppController.getInstance().enableAd) {
             return;
         }
         InterstitialAd mInterstitialAd = new InterstitialAd(activity);
         mInterstitialAd.setAdUnitId(activity.getString(R.string.ADMOB_APP_INTERSTITIAL_ID));
-        mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice(ADMOB_TEST_DEVICE).build());
+        if (BuildConfig.DEBUG) {
+            mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice(ADMOB_TEST_DEVICE).build());
+        } else {
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        }
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
@@ -315,17 +315,33 @@ public class Utils {
         });
     }
 
+    public static void shareApplication() {
+        Intent shareIntent = new Intent();
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, AppController.getInstance().getString(R.string.app_name));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, AppController.getInstance().getString(R.string.download_app));
+        shareIntent.setAction(Intent.ACTION_SEND);
+        if (shareIntent.resolveActivityInfo(AppController.getInstance().getPackageManager(), 0) != null)
+            AppController.getInstance().startActivity(Intent.createChooser(shareIntent, "Choose one:"));
+    }
+
     public static void buildBannerAD(AdView adView) {
-        if(!AppController.getInstance().enableAd){
+        if (!AppController.getInstance().enableAd) {
             return;
         }
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(ADMOB_TEST_DEVICE).build();
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        if (BuildConfig.DEBUG) {
+            adRequest = new AdRequest.Builder().addTestDevice(ADMOB_TEST_DEVICE).build();
+        } else {
+            adRequest = new AdRequest.Builder().build();
+        }
         adView.loadAd(adRequest);
     }
 
 
     public static void buildRewardedAd(Activity activity) {
-        if(!AppController.getInstance().enableAd){
+        if (!AppController.getInstance().enableAd) {
             return;
         }
         RewardedAd rewardedAd = new RewardedAd(activity, activity.getString(R.string.ADMOB_APP_REWARDED_ID));
@@ -336,18 +352,19 @@ public class Utils {
                 rewardedAd.show(activity, new RewardedAdCallback() {
                     @Override
                     public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-
                     }
                 });
             }
-
 
             @Override
             public void onRewardedAdFailedToLoad(int errorCode) {
                 // Ad failed to load.
             }
         };
-        rewardedAd.loadAd(new AdRequest.Builder().addTestDevice(ADMOB_TEST_DEVICE).build(), adLoadCallback);
-
+        if (BuildConfig.DEBUG) {
+            rewardedAd.loadAd(new AdRequest.Builder().addTestDevice(ADMOB_TEST_DEVICE).build(), adLoadCallback);
+        } else {
+            rewardedAd.loadAd(new AdRequest.Builder().build(), adLoadCallback);
+        }
     }
 }

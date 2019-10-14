@@ -246,13 +246,13 @@ public class SearchActivity extends AppCompatActivity implements SearchListAdapt
 
                 expandAnimation(resource.data.size());
                 if (resource.status == Status.ERROR) {
-                    Toast.makeText(SearchActivity.this, "Check your network connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SearchActivity.this, getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
                 }
 
             } else if (resource.status == Status.ERROR) {
-                handleEmptyList("Check your Connection");
+                handleEmptyList(getString(R.string.no_connection));
             } else if (resource.status == Status.SUCCESS && (resource.data == null || resource.data.size() == 0)) {
-                handleEmptyList("No Item found");
+                handleEmptyList(getString(R.string.no_more_item));
             }
         });
     }

@@ -18,8 +18,6 @@ import com.example.more.data.Status;
 import com.example.more.databinding.ListActivityBinding;
 import com.example.more.ui.fragment.ListFragment;
 import com.example.more.utills.Utils;
-import com.example.more.utills.animation.AnimUtil;
-import com.google.android.gms.ads.MobileAds;
 
 import dagger.android.AndroidInjection;
 
@@ -27,7 +25,7 @@ import dagger.android.AndroidInjection;
  * Activity host {@link ListFragment} to display list of content
  * Content is define by {@link ListFragment#content_type}
  *
- * @see also {@link DownloadManagerActivity}
+ * @see  {@link DownloadManagerActivity}
  */
 
 public class ListActivity extends AppCompatActivity implements ListFragment.OnFragmentInteractionListener {
@@ -49,6 +47,7 @@ public class ListActivity extends AppCompatActivity implements ListFragment.OnFr
     final public static int QUOTE = 1;
     final public static int STORY = 2;
     final public static int MEDIA = 3;
+    final public static int OTD = 4; //on this day
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +67,13 @@ public class ListActivity extends AppCompatActivity implements ListFragment.OnFr
      * Method to initialize admob sdk to show ads
      */
     public void initAdMob() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Utils.buildInterstitialAd(ListActivity.this);
+            }
+        },1500);
         Utils.buildBannerAD(binding.adView);
-        Utils.buildInterstitialAd(this);
     }
 
 

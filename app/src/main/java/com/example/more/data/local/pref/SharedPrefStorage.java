@@ -2,7 +2,6 @@ package com.example.more.data.local.pref;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.Toast;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

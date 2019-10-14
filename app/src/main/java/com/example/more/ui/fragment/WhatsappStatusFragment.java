@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -194,7 +193,6 @@ public class WhatsappStatusFragment extends DaggerFragment implements StaggeredL
 
         whatsappStatusViewModel.getPathLiveData().observe(this, resource -> {
             Timber.v(resource.data.status.name() + " " + resource.isSuccess() + " " + resource.isLoading());
-            Toast.makeText(getActivity(), "" + resource.isSuccess(), Toast.LENGTH_SHORT).show();
             if (resource.data != null) {
                 contentListAdapter.setItem(resource.data);
             } //else handleErrorResponse();

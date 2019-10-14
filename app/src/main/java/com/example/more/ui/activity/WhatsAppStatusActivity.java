@@ -2,6 +2,7 @@
 package com.example.more.ui.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.transition.Slide;
 import android.transition.Visibility;
 import android.view.Gravity;
@@ -40,8 +41,13 @@ public class WhatsAppStatusActivity extends AppCompatActivity {
      * Method to initialize admob sdk to show ads
      */
     public void initAdMob() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Utils.buildInterstitialAd(WhatsAppStatusActivity.this);
+            }
+        }, 1000);
         Utils.buildBannerAD(binding.adView);
-        Utils.buildInterstitialAd(this);
     }
 
     /*

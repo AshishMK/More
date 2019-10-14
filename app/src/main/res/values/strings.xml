@@ -50,11 +50,21 @@
     <string name="notif_quote">A refreshing quote has arrived.\nLet\'s feel it.</string>
     <string name="notif_meme">A new meme is waiting for you.\nLet\'s read it out.</string>
     <string name="notif_video">A new interesting video is here.\nLet\'s amazed by it.</string>
+    <string name="notif_day">Know about today.\n Birthdays and Events</string>
+
+    <string name="title_detail_fact">%1$s Fact</string>
+    <string name="title_detail_quote">%1$s Quote</string>
+    <string name="title_detail_meme">%1$s Meme</string>
+    <string name="title_detail_video">%1$s Video</string>
+    <string name="title_detail_day">%1$sOn this day</string>
+    <string name="otd">On this day</string>
+    <string name="otd_pref">On_this_day</string>
     <string name="status">Status</string>
     <string name="notification">Notification</string>
     <string name="other">Other</string>
     <string name="help">Help</string>
     <string name="credits">Credits</string>
+    <string name="share">Share </string>
     <string name="img_credits">Image Credit: %1$s</string>
     <string name="fact_notification">Fact</string>
     <string name="list_transaction">LIST_TRANSACTION</string>
@@ -88,7 +98,7 @@
     <string name="no_connection">Offline!! Please check your connection</string>
     <string name="download_location">Download Location</string>
     <string name="already_downloaded">"Already Downloaded"</string>
-    <string name="download_app">Share via View More. Please download at</string>
+    <string name="download_app">Try this new app called Mystic. Get it from https://play.google.com/store/apps/details?id=com.apps24.more</string>
     <string name="location">Location %1$s</string>
     <string name="whats_app_head_message">All files are downloaded at \"%1$s\".\n\nIf you didn\'t found any status please watch them on WhatsApp firstly.</string>
     <string name="cancel">Cancel</string>
