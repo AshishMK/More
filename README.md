@@ -4,7 +4,7 @@ The one app which provides a single place where you can enjoy reading and watchi
 Basically, This app serves you on two major parts, in that one is contents and another is tools.
 Let's go through you with that.
 <br><br><b>Contents: </b> Contents part gives you a blend of entertainment, knowledge, and sentiments. Furthermore, It also has 4 different categories defined as facts, quotes, memes, and media.
-<br/><b>• Facts: </b> Gro<emsp />w your knowledge by reading facts about around the world and universe. You will receive a new one daily.
+<br/><b>• Facts: </b> Grow your knowledge by reading facts about around the world and universe. You will receive a new one daily.
 <br><b> • Quotes: </b> Get motivated, feel different sentiments with a variety of words by a great personality from past and present. You will receive a new one daily.
 <br><b> • Meme: </b>  Meme are the perfect stress busters that helps you to lighten up your mood. Read some of the hilarious mems daily here. 
 <br><b> • Media: </b> Media is the collection of YouTube videos that are made for you kind of section. Here you find informatics and entertaining video on a daily basis.
