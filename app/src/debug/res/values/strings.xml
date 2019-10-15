@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DebugMystic</string>
+    <string name="notif_fact">Debug fact for you.\nLet\'s gain some knowledge</string>
+    <string name="notif_quote">Debug quote has arrived.\nLet\'s feel it.</string>
+    <string name="notif_meme">Debug meme is waiting for you.\nLet\'s read it out.</string>
+    <string name="notif_video">Debug video is here.\nLet\'s amazed by it.</string>
+    <string name="notif_day">debug Know about today.\n Birthdays and Events</string>
+    </resources>
