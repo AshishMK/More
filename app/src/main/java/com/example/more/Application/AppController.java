@@ -112,7 +112,7 @@ public class AppController extends MultiDexApplication implements HasSupportFrag
      */
     public void checkFCMUpdate() {
         //check weather FCM token is not updated to server
-        if (!(boolean) (preferenceStorage.readValue(FCM_UPDATED, false))) {
+        if ((boolean) (preferenceStorage.readValue(FCM_UPDATED, false))) {
             FirebaseInstanceId.getInstance().getInstanceId()
                     .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                         @Override
@@ -125,8 +125,8 @@ public class AppController extends MultiDexApplication implements HasSupportFrag
                             // Get new Instance ID token
                             String token = task.getResult().getToken();
 
-                            updateToken(token);
-                            Timber.v(token);
+                        //    updateToken(token);
+                                Timber.v(""+token);
                         }
                     });
         }
