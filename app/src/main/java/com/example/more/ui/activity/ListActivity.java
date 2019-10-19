@@ -67,12 +67,7 @@ public class ListActivity extends AppCompatActivity implements ListFragment.OnFr
      * Method to initialize admob sdk to show ads
      */
     public void initAdMob() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Utils.buildInterstitialAd(ListActivity.this);
-            }
-        },1500);
+
         Utils.buildBannerAD(binding.adView);
     }
 

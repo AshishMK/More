@@ -39,6 +39,7 @@ import java.util.Date;
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
+import timber.log.Timber;
 
 import static androidx.core.app.NotificationCompat.PRIORITY_MAX;
 import static com.example.more.Application.AppController.FCM_UPDATED;
@@ -94,6 +95,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationEntity.setMedia(remoteMessage.getData().get("media"));
             notificationEntity.setReceivedAt(new Date().getTime());
             ////  contentDao.insertNotification(notificationEntity);
+            Timber.v("content_type "+showNotification(Integer.parseInt(remoteMessage.getData().get("content_type"))));
             if (showNotification(Integer.parseInt(remoteMessage.getData().get("content_type")))) {
                 if (Integer.parseInt(remoteMessage.getData().get("content_type")) == 4) {
                     fetchContent(4, 0, remoteMessage.getData().get("tag"));
@@ -133,7 +135,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             @Override
             public void run() {
                 Glide.with(MyFirebaseMessagingService.this).asBitmap()
-                        .load((media != null && !media.contains(".png")) ? "http://img.youtube.com/vi/" + media + "/0.jpg" : base_url + "tnt_file/" + media)
+                        .load((media != null && !media.contains(".")) ? "http://img.youtube.com/vi/" + media + "/0.jpg" : base_url + "tnt_file/" + media)
                         .into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {

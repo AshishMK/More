@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.more.BR;
 import com.example.more.R;
 import com.example.more.data.Status;
+import com.example.more.data.local.dao.ContentDao;
 import com.example.more.data.local.entity.ContentEntity;
 import com.example.more.databinding.ListFragmentBinding;
 import com.example.more.factory.ViewModelFactory;
@@ -66,6 +68,14 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
     @Inject
     ViewModelFactory viewModelFactory;
 
+    @Inject
+    ContentDao contentDao;
+
+    /**
+     * star menu item reference to show and hide @see {@link ListFragment#initialiseViewModel}
+     */
+    MenuItem starItem;
+
     LinearLayoutManager mLayoutManager;
 
     /**
@@ -73,6 +83,8 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
      */
     GridLayoutManager mGridLayoutManager;
     public String tag = null;
+
+    boolean filter_starred = false;
     /*
      * This is our ViewModel class
      * */
@@ -151,13 +163,13 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
 
     /****/
     void setuprecyclerView() {
-        contentListAdapter = new ContentListAdapter(getActivity(), content_type);
+        contentListAdapter = new ContentListAdapter(getActivity(), content_type, contentDao);
         binding.list.setLayoutManager(content_type == ListActivity.STORY ? (mGridLayoutManager = new GridLayoutManager(getActivity(), 2)) : (mLayoutManager = new LinearLayoutManager(getActivity())));
         if (mGridLayoutManager != null) {
             mGridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    return position == contentListAdapter.getItemCount() - 1 ? 2:1;
+                    return position == contentListAdapter.getItemCount() - 1 ? 2 : 1;
                 }
             });
         }
@@ -178,7 +190,7 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
                         if ((visibleItemCount + pastVisiblesItems) >= totalItemCount - 3) {
                             loadMore = false;
                             //Do pagination.. i.e. fetch new data
-                            contentListViewModel.loadContentList(content_type, contentListAdapter.getItemCount() - 1, tag);
+                            contentListViewModel.loadContentList(content_type, contentListAdapter.getItemCount() - 1, tag, false);
 
                         }
                     }
@@ -191,12 +203,20 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.list_menu, menu);
+        starItem = menu.findItem(R.id.filter_starred);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
             transitionToActivity(new Intent(getActivity(), SearchActivity.class));
+            return true;
+        } else if (item.getItemId() == R.id.filter_starred) {
+            loadMore = true;
+            filter_starred = !filter_starred;
+            contentListAdapter.isStarMode = filter_starred;
+            contentListViewModel.loadContentList(content_type, loadMore ? -1 : contentListAdapter.getItemCount() - 1, tag, filter_starred);
+            item.setIcon(filter_starred ? R.drawable.ic_star_black_24dp : R.drawable.ic_star_border_black_24dp);
             return true;
         }
 
@@ -224,6 +244,8 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
         contentListViewModel = ViewModelProviders.of(this, viewModelFactory).get(ContentListViewModel.class);
         contentListViewModel.getContentLiveData().observe(this, resource -> {
             if (resource.isLoading()) {
+                if (starItem != null)
+                    starItem.setVisible(false);
                 //displayLoader();
                 mListener.onFragmentStatus(Status.LOADING);
                 if (!loadMore)
@@ -233,7 +255,6 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
                     binding.setVariable(BR.status, Status.LOADING);
                 }
             } else if (resource.data != null && resource.data.size() > 0) {
-
                 binding.setVariable(BR.status, Status.SUCCESS);
                 mListener.onFragmentStatus(resource.status);
                 updateContentList(resource.data, !loadMore, resource.status);
@@ -261,11 +282,13 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
                     binding.setVariable(BR.status, Status.NOT_FOUND);
             }
             if (!resource.isLoading()) {
+                if (starItem != null)
+                    starItem.setVisible(true);
                 //mListener.onDataReceived();
             }
         });
         /* Fetch content list  */
-        contentListViewModel.loadContentList(content_type, -1, tag);
+        contentListViewModel.loadContentList(content_type, -1, tag, false);
     }
 
     /**
@@ -322,7 +345,7 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SearchActivity.REQUEST_CODE) {
                 loadMore = true;
-                contentListViewModel.loadContentList(content_type, -1, tag = data.getStringExtra("tag"));
+                contentListViewModel.loadContentList(content_type, -1, tag = data.getStringExtra("tag"), false);
                 mListener.onFragmentInteraction(data.getStringExtra("tag"));
             }
         }
@@ -338,7 +361,7 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
     @Override
     public void refreshList(View v) {
         /* Fetch content list  */
-        contentListViewModel.loadContentList(content_type, loadMore ? -1 : contentListAdapter.getItemCount() - 1, tag);
+        contentListViewModel.loadContentList(content_type, loadMore ? -1 : contentListAdapter.getItemCount() - 1, tag, false);
 
     }
 }

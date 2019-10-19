@@ -3,6 +3,8 @@ package com.example.more.di.module;
 import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.room.Room;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 
 import com.example.more.data.local.AppDatabase;
@@ -26,9 +28,19 @@ public class DbModule {
     AppDatabase provideDatabase(@NonNull Application application) {
         return Room.databaseBuilder(application,
                 AppDatabase.class, "Entertainment.db")
+                .addMigrations(MIGRATION_1_2)
                 .allowMainThreadQueries().build();
     }
 
+
+    /**Add new column to star a content entity*/
+    static final Migration MIGRATION_1_2= new Migration(1, 2) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE ContentEntity "
+                    + " ADD COLUMN isStarred INTEGER DEFAULT 0 NOT NULL");
+        }
+    };
 
     /*
      * We need the ContentDao module.

@@ -34,15 +34,26 @@
             android:src="@drawable/fact"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/title"
             app:layout_constraintTop_toTopOf="parent"
             app:profileImage="@{content.media_link}" />
 
-        <TextView
-            android:id="@+id/title"
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/starred"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:button="@drawable/star_checkbox"
+            android:checked="@{content.starred}"
+            android:onCheckedChanged="@{contentViewHolder::onStarredChanged}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
             android:ellipsize="end"
             android:fontFamily="casual"
             android:includeFontPadding="false"
@@ -51,26 +62,28 @@
             android:textColor="#fff"
             android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/guideline3"
             app:layout_constraintLeft_toRightOf="@+id/logo"
-             />
+            app:layout_constraintRight_toLeftOf="@+id/starred"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/dated"
-            android:layout_width="wrap_content"
-            android:text="@{content.description}"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
             android:ellipsize="end"
             android:fontFamily="casual"
             android:gravity="top"
             android:includeFontPadding="false"
             android:maxLines="1"
+            android:text="@{content.description}"
             android:textColor="#fff"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@+id/logo"
+            app:layout_constraintRight_toLeftOf="@+id/starred"
             app:layout_constraintTop_toBottomOf="@+id/guideline3" />
 
         <androidx.constraintlayout.widget.Guideline

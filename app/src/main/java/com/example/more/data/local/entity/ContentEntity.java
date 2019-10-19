@@ -50,6 +50,8 @@ public class ContentEntity implements Parcelable {
     @Expose
     private String credits;
 
+    boolean isStarred;
+
     public Long getId() {
         return id;
     }
@@ -117,6 +119,14 @@ public class ContentEntity implements Parcelable {
         this.credits = credits;
     }
 
+    public boolean isStarred() {
+        return isStarred;
+    }
+
+    public void setStarred(boolean starred) {
+        isStarred = starred;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -132,6 +142,7 @@ public class ContentEntity implements Parcelable {
         dest.writeString(this.tag);
         dest.writeInt(this.contentType);
         dest.writeString(this.credits);
+        dest.writeValue(this.isStarred);
     }
 
     public ContentEntity() {
@@ -146,6 +157,7 @@ public class ContentEntity implements Parcelable {
         this.tag = in.readString();
         this.contentType = in.readInt();
         this.credits = in.readString();
+        this.isStarred = (boolean) in.readValue(Boolean.class.getClassLoader());
     }
 
     public static final Creator<ContentEntity> CREATOR = new Creator<ContentEntity>() {

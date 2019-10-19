@@ -38,6 +38,15 @@
             android:layout_gravity="center"
             android:onClick="@{ ()-> contentViewHolder.onItemClick(content)}"
             app:profileImage="@{content.media_link}" />
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/starred"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/star_checkbox"
+            android:checked="@{content.starred}"
+            android:onCheckedChanged="@{contentViewHolder::onStarredChanged}"
+            android:layout_gravity="right"
+            />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

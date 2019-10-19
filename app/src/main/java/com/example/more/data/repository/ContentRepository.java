@@ -43,6 +43,7 @@ public class ContentRepository {
 
     int content_type;
     String tag;
+    boolean filter_starred;
 
     /*
      * We are using this method to fetch the content list
@@ -61,9 +62,10 @@ public class ContentRepository {
      * this data.
      *
      * */
-    public Observable<Resource<List<ContentEntity>>> loadMoviesByType(int contentType, int offset, String tag) {
+    public Observable<Resource<List<ContentEntity>>> loadMoviesByType(int contentType, int offset, String tag, boolean filter_starred) {
         this.content_type = contentType;
         this.tag = tag;
+        this.filter_starred = filter_starred;
         return new NetworkBoundResource<List<ContentEntity>, ContentEntityApiResponse>() {
 
             @Override
@@ -79,11 +81,17 @@ public class ContentRepository {
             @NonNull
             @Override
             protected Flowable<List<ContentEntity>> loadFromDb() {
-                List<ContentEntity> movieEntities = (TextUtils.isEmpty(tag) ? contentDao.getContentByContentType(content_type, offset == -1 ? 0 : offset) : contentDao.getContentByTag(content_type, tag,offset == -1 ? 0 : offset));
+                List<ContentEntity> movieEntities = (TextUtils.isEmpty(tag) ? (filter_starred ? contentDao.getContentByContentTypeWithStarred(content_type, offset == -1 ? 0 : offset,filter_starred) :contentDao.getContentByContentType(content_type, offset == -1 ? 0 : offset)) : (filter_starred ? contentDao.getContentByTagWithStarred(content_type, tag, offset == -1 ? 0 : offset,filter_starred):contentDao.getContentByTag(content_type, tag, offset == -1 ? 0 : offset)));
                 if (movieEntities == null || movieEntities.isEmpty()) {
                     return Flowable.just(new ArrayList<>());
                 }
                 return Flowable.just(movieEntities);
+            }
+
+            @NonNull
+            @Override
+            protected ContentDao getDAO() {
+                return contentDao;
             }
 
             @NonNull

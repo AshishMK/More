@@ -16,8 +16,8 @@
     <string name="waiting_for_network"> Waiting for Network</string>
     <string name="app_name">Mystic</string>
     <string name="error_downloading">Download Error</string>
-    <string name="loading">Loading...</string>
-    <string name="percent_progress">%1$d%%</string>
+    <string name="loading">Loading…</string>
+    <string name="percent_progress">%1$d%%</string>my
     <string name="loading_more">Loading More Items</string>
     <string name="downloading">Downloading…</string>
     <string name="download_canceled">Download Canceled</string>
@@ -25,7 +25,8 @@
     <string name="download_video">Download Video?</string>
     <string name="download_video_msg">Tap Ok to download video, Cancel to continue to watch video.</string>
     <string name="photo_downloaded">Photo Downloaded</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Filter stared item</string>
+    <string name="action_star">Settings</string>
     <string name="dm">Downloads</string>
     <string name="copy_url">Copy Link</string>
     <string name="copy">Copy</string>

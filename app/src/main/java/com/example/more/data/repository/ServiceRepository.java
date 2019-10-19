@@ -72,6 +72,11 @@ public class ServiceRepository {
             }
 
             @Override
+            protected ContentDao getDAO() {
+                return contentDao;
+            }
+
+            @Override
             protected boolean shouldFetch() {
                 return true;
             }

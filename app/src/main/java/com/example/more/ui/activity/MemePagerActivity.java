@@ -92,9 +92,9 @@ public class MemePagerActivity extends AppCompatActivity implements MemePagerAct
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Utils.buildRewardedAd(MemePagerActivity.this);
+                Utils.buildInterstitialAd(MemePagerActivity.this);
             }
-        }, 1000);
+        },1500);
         Utils.buildBannerAD(binding.adView);
     }
 

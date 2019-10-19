@@ -41,8 +41,8 @@ public class ContentListViewModel extends ViewModel {
     /*
      * Method called by UI to fetch movies list
      * */
-    public void loadContentList(int contentType, int offset,String tag) {
-        contentRepository.loadMoviesByType(contentType,offset,tag)
+    public void loadContentList(int contentType, int offset, String tag, boolean filter_starred) {
+        contentRepository.loadMoviesByType(contentType,offset,tag,filter_starred )
                     .subscribe(resource -> getContentLiveData().postValue(resource));
     }
 

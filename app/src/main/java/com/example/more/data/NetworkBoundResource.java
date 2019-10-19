@@ -4,6 +4,10 @@ import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
 
+import com.example.more.data.local.dao.ContentDao;
+import com.example.more.data.local.entity.ContentEntity;
+import com.example.more.data.remote.model.ContentEntityApiResponse;
+
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -54,10 +58,28 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
 
     @WorkerThread
     protected RequestType processResponse(Resource<RequestType> response) {
+
+        /**
+         * when we call content API the new data of ContentEntity also
+         * override old {@link ContentEntity} field isStarred so
+         * basically we set the original/old value of a {@link ContentEntity}
+         * to new loaded {@link ContentEntity} here.
+         * */
+        if(response.data!=null && response.data instanceof ContentEntityApiResponse  ) {
+            for (ContentEntity entity : ((ContentEntityApiResponse)response.data).getResults()) {
+            ContentEntity contentEntity = getDAO().getContentById(entity.getId());
+            if(contentEntity!=null){
+                entity.setStarred(contentEntity.isStarred());
+            }
+            }
+        }
         return response.data;}
 
     @WorkerThread
     protected abstract void saveCallResult(@NonNull RequestType item);
+
+    @WorkerThread
+    protected abstract ContentDao getDAO();
 
     @MainThread
     protected abstract boolean shouldFetch();

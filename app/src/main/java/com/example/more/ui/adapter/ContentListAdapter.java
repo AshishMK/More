@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.more.BR;
 import com.example.more.R;
 import com.example.more.data.Status;
+import com.example.more.data.local.dao.ContentDao;
 import com.example.more.data.local.entity.ContentEntity;
 import com.example.more.databinding.GridItemBinding;
 import com.example.more.databinding.ListItemBinding;
@@ -47,9 +49,20 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
      * for meme we use gris list*/
     int content_type;
 
-    public ContentListAdapter(Activity activity, int content_type) {
+    /**
+     * Database object to perform star a conetnt operation
+     */
+    ContentDao contentDao;
+
+    /**
+     * is starred content filter enabled
+     */
+    public boolean isStarMode = false;
+
+    public ContentListAdapter(Activity activity, int content_type, ContentDao contentDao) {
         this.activity = activity;
         this.content_type = content_type;
+        this.contentDao = contentDao;
         contents = new ArrayList<>();
     }
 
@@ -114,8 +127,7 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
         }
 
         public void bindTo(ContentEntity content, ViewHolder holder) {
-            if (listItemBinding == null)
-            {
+            if (listItemBinding == null) {
                 gridItemBinding.setVariable(BR.contentViewHolder, holder);
                 gridItemBinding.setVariable(BR.content, content);
                 return;
@@ -146,11 +158,30 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
 
         }
 
+        public void onStarredChanged(View view, boolean starred) {
+            int pos = getAdapterPosition();
+            ContentEntity content = contents.get(pos);
+            content.setStarred(starred);
+            contentDao.updateContentStarred(content);
+            if (isStarMode && !starred) {
+                contents.remove(pos);
+                if (0 == contents.size() ) {
+                    System.out.println("gghg "+pos);
+                    notifyDataSetChanged();
+                }
+                else {
+                    notifyItemRemoved(pos);
+                }
+            }
+
+        }
+
         public void onItemClick(ContentEntity content) {
-            if(content.getContentType() == ListActivity.STORY){
+            if (content.getContentType() == ListActivity.STORY) {
                 Intent intent = new Intent(activity, MemePagerActivity.class);
+
                 intent.putParcelableArrayListExtra("contents", (ArrayList<? extends Parcelable>) contents);
-                intent.putExtra("position",getAdapterPosition());
+                intent.putExtra("position", getAdapterPosition());
                 transitionToMemePagerActivity(intent);
                 return;
             }
