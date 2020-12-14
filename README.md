@@ -1,5 +1,5 @@
-# Mystic
-Mystic app is collection of tools and different content
+# DailyX
+DailyX app is collection of tools and different content
 The one app which provides a single place where you can enjoy reading and watching various type of content and also you can use a different type of tools to accomplish the intended tasks. So it's a quite entertaining and instrumented app at the same time.
 Basically, This app serves you on two major parts, in that one is contents and another is tools.
 Let's go through you with that.

@@ -14,12 +14,14 @@
     <string name="fb_none">Downloading</string>
     <string name="fb_canceled">Canceled</string>
     <string name="waiting_for_network"> Waiting for Network</string>
-    <string name="app_name">Mystic</string>
+    <string name="app_name">DailyX</string>
+    <string name="app_sub_name">Content &amp; Utility</string>
     <string name="error_downloading">Download Error</string>
     <string name="loading">Loading…</string>
     <string name="percent_progress">%1$d%%</string>my
     <string name="loading_more">Loading More Items</string>
     <string name="downloading">Downloading…</string>
+    <string name="on_queue">Wait..Download On Queue</string>
     <string name="download_canceled">Download Canceled</string>
     <string name="video_downloaded">Video Downloaded</string>
     <string name="download_video">Download Video?</string>
@@ -35,6 +37,7 @@
     <string name="dont_show_again_notif">dont_show_again_notif</string>
     <string name="not_downloaded">Video has not downloaded yet</string>
     <string name="facebook">FB Video Downloader</string>
+    <string name="yt_downloader">YouTube Downloader</string>
     <string name="copy_msg">Long press to copy</string>
     <string name="copy_fb_link">Paste video link here</string>
     <string name="invalid_link">Invalid link</string>
@@ -64,7 +67,22 @@
     <string name="notification">Notification</string>
     <string name="other">Other</string>
     <string name="help">Help</string>
+    <string name="val_sel_item">Please select at least one item</string>
+    <string name="done">Done</string>
     <string name="credits">Credits</string>
+    <string name="update">Update</string>
+    <string name="submit">Submit</string>
+    <string name="ok_cancel_download">Cancel Download</string>
+    <string name="update_app_title">Update app</string>
+    <string name="report_video">Report Content</string>
+    <string name="download_nocrap">Download NoCrap App</string>
+    <string name="download_formats">Available Video Formats</string>
+    <string name="youtube_downloading">Downloading Video Information</string>
+    <string name="download_video_without_audio">Download Video Without Audio</string>
+    <string name="download_video_without_audio_msg">This video doesn\'t have audio. Audio will be downloaded separately and merged to this video at the end.\nSo two files going to be download</string>
+    <string name="download_nocrap_desc">Download NoCrap App for more videos and media contents from PlayStore.</string>
+    <string name="report_video_msg">Tell us why do you want to report this content.\nPlease add you\'r Email if necessary.</string>
+    <string name="wait_reporet">Please wait, Video hasn\'t loaded yet</string>
     <string name="share">Share </string>
     <string name="img_credits">Image Credit: %1$s</string>
     <string name="fact_notification">Fact</string>
@@ -76,30 +94,34 @@
     <string name="meme_notification">Meme</string>
     <string name="status_notification">notification_status</string>
     <string name="movie_notification">Movie</string>
+    <bool name="showAds">true</bool>
     <plurals name="fact">
-        <item quantity="one">Fact</item>
-        <item quantity="other">Facts</item>
+        <item quantity="one">NATURE</item>
+        <item quantity="other">NATURE\'s VIDEOS</item>
     </plurals>
     <plurals name="quote">
-        <item quantity="one">Quote</item>
-        <item quantity="other">Quotes</item>
+        <item quantity="one">HUMAN</item>
+        <item quantity="other">HUMAN\'s VIDEOS</item>
     </plurals>
     <string name="search_hint">Search e.g. love, funny</string>
     <string name="tapReload">Tap to refresh</string>
     <plurals name="meme">
-        <item quantity="one">Meme</item>
-        <item quantity="other">Memes</item>
+        <item quantity="one">STILLS</item>
+        <item quantity="other">WALLPAPERS</item>
     </plurals>
     <plurals name="media">
-        <item quantity="one">Media</item>
-        <item quantity="other">Videos</item>
+        <item quantity="one">YOUTUBE</item>
+        <item quantity="other">YOUTUBE</item>
     </plurals>
+    <string name="show_reward_ad_title">Get Reward</string>
+    <string name="show_reward_ad_msg">Please watch this video AD completely &amp; continue to download the video. </string>
     <string name="show_scroll_pref">show_scroll_pref</string>
     <string name="no_item_found">Sorry!! No content found</string>
     <string name="no_connection">Offline!! Please check your connection</string>
     <string name="download_location">Download Location</string>
+    <string name="media_detail">Media Details!</string>
     <string name="already_downloaded">"Already Downloaded"</string>
-    <string name="download_app">Try this new app called Mystic. Get it from https://play.google.com/store/apps/details?id=com.apps24.more</string>
+    <string name="download_app">Try this new app called DailyX. Get it from https://play.google.com/store/apps/details?id=com.apps24.dailyx</string>
     <string name="location">Location %1$s</string>
     <string name="whats_app_head_message">All files are downloaded at \"%1$s\".\n\nIf you didn\'t found any status please watch them on WhatsApp firstly.</string>
     <string name="cancel">Cancel</string>

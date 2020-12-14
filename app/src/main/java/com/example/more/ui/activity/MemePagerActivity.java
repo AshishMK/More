@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.more.BR;
 import com.example.more.R;
 import com.example.more.data.local.pref.PreferencesStorage;
+import com.example.more.data.local.pref.SharedPrefStorage;
 import com.example.more.databinding.MemePagerActivityBinding;
 import com.example.more.ui.adapter.MemePagerAdapter;
 import com.example.more.ui.fragment.ListFragment;
@@ -281,7 +282,7 @@ public class MemePagerActivity extends AppCompatActivity implements MemePagerAct
         toScroll = toScroll >= binding.pager.getAdapter().getCount() - 1 ? toScroll - 1 : toScroll + 1;
         binding.pager.setCurrentItem(toScroll, true);
         preferenceStorage.writeValue(getString(R.string.show_scroll_pref), false);
-        binding.setPreferenceStorage(preferenceStorage);
+        binding.setPreferenceStorage((SharedPrefStorage) preferenceStorage);
     }
 
     @Override

@@ -24,12 +24,14 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.more.Application.AppController;
 import com.example.more.R;
 import com.example.more.receiver.CancelReceiver;
 import com.example.more.ui.activity.DownloadManagerActivity;
 import com.example.more.ui.activity.HomeActivity;
+import com.example.more.ui.services.VideoAudioMergerService;
 import com.tonyodev.fetch2.Download;
 import com.tonyodev.fetch2.Error;
 import com.tonyodev.fetch2.FetchListener;
@@ -40,10 +42,17 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import VideoHandle.EpEditor;
+import VideoHandle.OnEditorListener;
 
 /**
  * Class to provide notifications about facebook video download and
  * progress of dialog
+ *
  * @see com.example.more.ui.fragment.FacebookFragment for uses.
  */
 @SuppressLint("RestrictedApi")
@@ -94,6 +103,7 @@ public class FileDownloadNotificationListener implements FetchListener {
 
     @Override
     public void onCompleted(@NotNull Download download) {
+        System.out.println("cd mp3 completed " + download.getFile());
         builder.mActions.clear();
         builder.setOngoing(false);
         builder.setContentTitle(AppController.getInstance().getString(R.string.video_downloaded));
@@ -102,6 +112,18 @@ public class FileDownloadNotificationListener implements FetchListener {
         builder.setContentText(AppController.getInstance().getString(R.string.app_name) + "/" + new File(download.getFile()).getName());
         builder.setProgress(0, 0, false);
         manager.notify(download.getId(), builder.build());
+
+        if (new File(download.getFile()).getName().startsWith("UtubeMp3_")) {
+            manager.cancel(download.getId());
+            startService(download.getFile());
+
+            return;
+        }
+        if (new File(download.getFile()).getName().startsWith("Utube_")) {
+            manager.cancel(download.getId());
+
+            return;
+        }
         Utils.sendFileToScan(new File(download.getFile()));
     }
 
@@ -146,7 +168,8 @@ public class FileDownloadNotificationListener implements FetchListener {
 
     @Override
     public void onQueued(@NotNull Download download, boolean waitingOnNetwork) {
-        builder.setContentTitle(AppController.getInstance().getString(R.string.downloading));
+
+        builder.setContentTitle(AppController.getInstance().getString(R.string.on_queue));
         builder.setTicker(AppController.getInstance().getString(R.string.downloading) + new File(download.getFile()).getName());
         builder.setOngoing(true);
         builder.setAutoCancel(false);
@@ -192,5 +215,12 @@ public class FileDownloadNotificationListener implements FetchListener {
 
         builder.addAction(new NotificationCompat.Action(0, AppController.getInstance().getString(R.string.cancel), cancelPendingIntent));
 
+    }
+
+
+    public void startService(String audio) {
+        Intent serviceIntent = new Intent(AppController.getInstance(), VideoAudioMergerService.class);
+        serviceIntent.putExtra("audio", audio);
+        ContextCompat.startForegroundService( AppController.getInstance(), serviceIntent);
     }
 }

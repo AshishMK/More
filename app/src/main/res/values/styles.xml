@@ -14,6 +14,10 @@
         <item name="android:windowMinWidthMajor">90%</item>
         <item name="android:windowMinWidthMinor">90%</item>
     </style>
+    <style name="DialogStyleSmall" parent="Base.Theme.AppCompat.Dialog">
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">70%</item>
+    </style>
 
     <style name="mySwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="colorControlHighlight">#ffffff</item>
@@ -29,6 +33,12 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.Transparent" parent="AppTheme.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
     <style name="NotificationContent" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:textColor">?android:attr/textColorPrimary</item>

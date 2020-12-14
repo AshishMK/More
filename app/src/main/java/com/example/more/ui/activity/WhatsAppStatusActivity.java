@@ -69,7 +69,7 @@ public class WhatsAppStatusActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, 0, 0, "info").setIcon(ActivityCompat.getDrawable(this, R.drawable.ic_info_outline_black_24dp)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(0, 0, 0, "info").setIcon(ActivityCompat.getDrawable(this, R.drawable.ic_outline_info_24)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
 
@@ -77,7 +77,7 @@ public class WhatsAppStatusActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == 0) {
 
-            AlertDialogProvider alertDialogProvider = AlertDialogProvider.getInstance(getString(R.string.download_location), String.format(getString(R.string.whats_app_head_message), getString(R.string.app_name) + " directory"), AlertDialogProvider.TYPE_NORMAL);
+            AlertDialogProvider alertDialogProvider = AlertDialogProvider.getInstance(getString(R.string.download_location), String.format(getString(R.string.whats_app_head_message), getString(R.string.app_name) + " directory"), AlertDialogProvider.TYPE_NORMAL,false);
             alertDialogProvider.setAlertDialogListener(new AlertDialogProvider.AlertDialogListener() {
                 @Override
                 public void onDialogCancel() {
@@ -85,7 +85,7 @@ public class WhatsAppStatusActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onDialogOk(String text) {
+                public void onDialogOk(String text, AlertDialogProvider dialog) {
                     Utils.openFileManager();
                 }
             });

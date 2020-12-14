@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
+import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
@@ -40,13 +41,15 @@ import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Class to provide application related all utilities
  */
 public class Utils {
 
-    public static final String ADMOB_TEST_DEVICE = "90DE0FF5D1BEB82ACBE8518D057B6FA5";
+    public static final String ADMOB_TEST_DEVICE = "4A4B1D5D88E0E1D5C7CE705733FB5B1B";
 
     /**
      * Method to provide mime type of a file provided by file uri
@@ -70,6 +73,39 @@ public class Utils {
             mimeType = "*/*";
         }
         return mimeType;
+    }
+
+    public static void requestFullScreenIfLandscape(Activity activity) {
+        //if (activity.getResources().getBoolean(R.bool.landscape)) {
+        activity.getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN // Hide the nav bar and status bar
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
+        //}
+    }
+
+
+    public static int getEmotion(int emotion) {
+        switch (emotion) {
+            case 0: {
+                return R.drawable.ic_wow;
+            }
+            case 1: {
+                return R.drawable.ic_care;
+            }
+            default: {
+                return R.drawable.ic_haha;
+            }
+        }
+    }
+
+    public static File getCacheDirectory() {
+        File f = new File(Environment.getExternalStorageDirectory().toString() + "/" + AppController.getInstance().getString(R.string.app_name) + "/.cache");
+        f.mkdirs();
+        return f;
     }
 
     /**
@@ -203,6 +239,11 @@ public class Utils {
         return new File(Environment.getExternalStorageDirectory().toString() + "/" + AppController.getInstance().getString(R.string.app_name) + "/");
     }
 
+
+    public static File getYoutubeResource() {
+        return new File(Environment.getExternalStorageDirectory().toString() + "/" + AppController.getInstance().getString(R.string.app_name) + "/yt/");
+    }
+
     /**
      * Method to open File manage app
      */
@@ -322,49 +363,69 @@ public class Utils {
         shareIntent.putExtra(Intent.EXTRA_TEXT, AppController.getInstance().getString(R.string.download_app));
         shareIntent.setAction(Intent.ACTION_SEND);
         if (shareIntent.resolveActivityInfo(AppController.getInstance().getPackageManager(), 0) != null)
-            AppController.getInstance().startActivity(Intent.createChooser(shareIntent, "Choose one:"));
+            AppController.getInstance().startActivity(Intent.createChooser(shareIntent, "Share App:"));
+    }
+
+    public static String getYouTubeId(String youTubeUrl) {
+        String pattern = "^.*((youtu.be\\/)|(v\\/)|(\\/u\\/\\w\\/)|(embed\\/)|(watch\\?))\\??v?=?([^#\\&\\?]*).*";
+
+        Pattern compiledPattern = Pattern.compile(pattern,
+                Pattern.CASE_INSENSITIVE);
+        Matcher matcher = compiledPattern.matcher(youTubeUrl);
+
+        if (matcher.find()) {
+            return matcher.group(7);
+        }
+        return null;
     }
 
     public static void buildBannerAD(AdView adView) {
+        adView.setVisibility(View.GONE);
         if (!AppController.getInstance().enableAd) {
             return;
         }
 
-        AdRequest adRequest = new AdRequest.Builder().build();
+       /* AdRequest adRequest = new AdRequest.Builder().build();
         if (BuildConfig.DEBUG) {
             adRequest = new AdRequest.Builder().addTestDevice(ADMOB_TEST_DEVICE).build();
         } else {
             adRequest = new AdRequest.Builder().build();
         }
-        adView.loadAd(adRequest);
+        adView.loadAd(adRequest);*/
     }
 
 
-    public static void buildRewardedAd(Activity activity) {
-        if (!AppController.getInstance().enableAd) {
-            return;
-        }
+    public static RewardedAd buildRewardedAd(Activity activity, boolean showADonLoad) {
         RewardedAd rewardedAd = new RewardedAd(activity, activity.getString(R.string.ADMOB_APP_REWARDED_ID));
-        RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
-            @Override
-            public void onRewardedAdLoaded() {
-                // Ad successfully loaded.
-                rewardedAd.show(activity, new RewardedAdCallback() {
-                    @Override
-                    public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-                    }
-                });
-            }
+        if (!AppController.getInstance().enableAd) {
+            return rewardedAd;
+        }
 
-            @Override
-            public void onRewardedAdFailedToLoad(int errorCode) {
-                // Ad failed to load.
-            }
-        };
+            RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
+                @Override
+                public void onRewardedAdLoaded() {
+                    // Ad successfully loaded.
+                    if(showADonLoad) {
+                        rewardedAd.show(activity, new RewardedAdCallback() {
+                            @Override
+                            public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onRewardedAdFailedToLoad(int errorCode) {
+                    // Ad failed to load.
+                }
+            };
+
         if (BuildConfig.DEBUG) {
             rewardedAd.loadAd(new AdRequest.Builder().addTestDevice(ADMOB_TEST_DEVICE).build(), adLoadCallback);
         } else {
             rewardedAd.loadAd(new AdRequest.Builder().build(), adLoadCallback);
         }
+    return rewardedAd;
     }
 }

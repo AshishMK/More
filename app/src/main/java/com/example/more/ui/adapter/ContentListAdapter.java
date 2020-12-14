@@ -3,11 +3,10 @@ package com.example.more.ui.adapter;
 import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
@@ -20,20 +19,19 @@ import com.example.more.BR;
 import com.example.more.R;
 import com.example.more.data.Status;
 import com.example.more.data.local.dao.ContentDao;
-import com.example.more.data.local.entity.ContentEntity;
+import com.example.more.data.remote.model.VideoEntity;
 import com.example.more.databinding.GridItemBinding;
 import com.example.more.databinding.ListItemBinding;
 import com.example.more.databinding.LoadMoreListItemBinding;
-import com.example.more.ui.activity.DetailActivity;
 import com.example.more.ui.activity.ListActivity;
-import com.example.more.ui.activity.MemePagerActivity;
-import com.example.more.ui.activity.YoutubePlayer;
-import com.example.more.utills.Utils;
+import com.example.more.ui.activity.PlayerActivity;
 import com.example.more.utills.animation.AnimUtil;
 import com.example.more.utills.animation.TransitionHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.more.di.module.ApiModule.base_url_download;
 
 /**
  * Adapter class to host list of content
@@ -42,7 +40,7 @@ import java.util.List;
  */
 public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.ViewHolder> {
     Activity activity;
-    private List<ContentEntity> contents;
+    private ArrayList<VideoEntity> contents;
     Status status = Status.SUCCESS;
     private static final int FOOTER_VIEW = 1;
     /***Note: We use Linear list for evey content type except meme contents.
@@ -71,11 +69,11 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
         notifyItemChanged(contents.size());
     }
 
-    public void setItems(List<ContentEntity> movies, boolean isFromLoadMore, Status status) {
+    public void setItems(List<VideoEntity> movies, boolean isFromLoadMore, Status status) {
         this.status = status;
         if (!isFromLoadMore) {
             this.contents.clear();
-            notifyDataSetChanged();
+            //  notifyDataSetChanged();
         } else
             notifyItemChanged(contents.size());
 
@@ -126,7 +124,7 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
             }
         }
 
-        public void bindTo(ContentEntity content, ViewHolder holder) {
+        public void bindTo(VideoEntity content, ViewHolder holder) {
             if (listItemBinding == null) {
                 gridItemBinding.setVariable(BR.contentViewHolder, holder);
                 gridItemBinding.setVariable(BR.content, content);
@@ -135,6 +133,7 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
 
             listItemBinding.setVariable(BR.contentViewHolder, holder);
             listItemBinding.setVariable(BR.content, content);
+            listItemBinding.setVariable(BR.url, base_url_download + content.thumb + (content.thumb.contains(".jpg") ? "" : ".png"));
 
         }
 
@@ -158,10 +157,10 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
 
         }
 
-        public void onStarredChanged(View view, boolean starred) {
+        public void onStarredChanged(CompoundButton view, boolean starred) {
             int pos = getAdapterPosition();
-            ContentEntity content = contents.get(pos);
-            content.setStarred(starred);
+            VideoEntity content = contents.get(pos);
+            /*content.setStarred(starred);
             contentDao.updateContentStarred(content);
             if (isStarMode && !starred) {
                 contents.remove(pos);
@@ -172,12 +171,14 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
                 else {
                     notifyItemRemoved(pos);
                 }
-            }
+            }*/
 
         }
 
-        public void onItemClick(ContentEntity content) {
-            if (content.getContentType() == ListActivity.STORY) {
+        public void onItemClick(VideoEntity content) {
+
+            activity.startActivity(new Intent(activity, PlayerActivity.class).putExtra("category", content_type).putParcelableArrayListExtra("list", contents));
+    /*        if (content.getContentType() == ListActivity.STORY) {
                 Intent intent = new Intent(activity, MemePagerActivity.class);
 
                 intent.putParcelableArrayListExtra("contents", (ArrayList<? extends Parcelable>) contents);
@@ -194,7 +195,7 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
             Intent intent = new Intent(activity, DetailActivity.class);
             intent.putExtra("content", content);
             //  activity.startActivity(intent);
-            transitionToActivity(intent);
+            transitionToActivity(intent);*/
         }
 
 

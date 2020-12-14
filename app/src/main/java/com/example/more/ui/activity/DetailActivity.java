@@ -93,11 +93,11 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_copy) {
-            AlertDialogProvider alertDialogProvider = AlertDialogProvider.getInstance(getString(R.string.copy_msg), binding.contentDetail.title.getText() + "\n" + binding.contentDetail.content.getText(), TYPE_EDIT);
+            AlertDialogProvider alertDialogProvider = AlertDialogProvider.getInstance(getString(R.string.copy_msg), binding.contentDetail.title.getText() + "\n" + binding.contentDetail.content.getText(), TYPE_EDIT,false);
             alertDialogProvider.show(getSupportFragmentManager(), DetailActivity.class.getName());
 
         } else if (item.getItemId() == R.id.action_credit) {
-            AlertDialogProvider.getInstance(getString(R.string.credits), String.format(getString(R.string.img_credits), ((ContentEntity) getIntent().getParcelableExtra("content")).getCredits()), TYPE_NORMAL)
+            AlertDialogProvider.getInstance(getString(R.string.credits), String.format(getString(R.string.img_credits), ((ContentEntity) getIntent().getParcelableExtra("content")).getCredits()), TYPE_NORMAL,false)
                     .show(getSupportFragmentManager(), DetailActivity.class.getName());
 
         }

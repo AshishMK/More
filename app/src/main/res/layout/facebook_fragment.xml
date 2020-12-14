@@ -10,26 +10,27 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="4dp"
-        app:cardCornerRadius="4dp">
+        android:elevation="0dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/drawer_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/pb"
-                android:theme="@style/myPBStyle"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
+                android:theme="@style/myPBStyle"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <WebView
                 android:id="@+id/webView"
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/pb" />
         </androidx.constraintlayout.widget.ConstraintLayout>

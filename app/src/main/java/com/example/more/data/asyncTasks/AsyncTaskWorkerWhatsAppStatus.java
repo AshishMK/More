@@ -47,7 +47,7 @@ public class AsyncTaskWorkerWhatsAppStatus {
     public static final String WHATSAPP_STATUSES_LOCATION = "/WhatsApp/Media/.Statuses";
 
     // Default location for saving app's content
-    File directory = new File(Environment.getExternalStorageDirectory().toString() + "/" + AppController.getInstance().getString(R.string.app_name));
+    File directory = new File(Environment.getExternalStorageDirectory().toString()  + "/" + AppController.getInstance().getString(R.string.app_name));
 
     public AsyncTaskWorkerWhatsAppStatus(ContentDao contentDao, ContentApiService contentApiServic) {
         this.contentDao = contentDao;

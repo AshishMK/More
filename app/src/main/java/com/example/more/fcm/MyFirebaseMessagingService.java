@@ -44,10 +44,10 @@ import timber.log.Timber;
 import static androidx.core.app.NotificationCompat.PRIORITY_MAX;
 import static com.example.more.Application.AppController.FCM_UPDATED;
 import static com.example.more.di.module.ApiModule.base_url;
-import static com.example.more.ui.activity.ListActivity.FACT;
+import static com.example.more.ui.activity.ListActivity.ANIMAL;
 import static com.example.more.ui.activity.ListActivity.MEDIA;
 import static com.example.more.ui.activity.ListActivity.OTD;
-import static com.example.more.ui.activity.ListActivity.QUOTE;
+import static com.example.more.ui.activity.ListActivity.HUMAN;
 import static com.example.more.ui.activity.ListActivity.STORY;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -107,9 +107,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     boolean showNotification(int type) {
         switch (type) {
-            case FACT:
+            case ANIMAL:
                 return (boolean) preferenceStorage.readValue(getString(R.string.fact_notification), true);
-            case QUOTE:
+            case HUMAN:
                 return (boolean) preferenceStorage.readValue(getString(R.string.quote_notification), true);
             case STORY:
                 return (boolean) preferenceStorage.readValue(getString(R.string.meme_notification), true);

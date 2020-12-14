@@ -4,6 +4,7 @@ package com.example.more.data.remote.api;
 import com.example.more.data.remote.model.ContentEntityApiResponse;
 import com.example.more.data.remote.model.FCMApiResponse;
 import com.example.more.data.remote.model.SearchEntityApiResponse;
+import com.example.more.data.remote.model.VideoListEntity;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -12,6 +13,15 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 
 public interface ContentApiService {
+    @Multipart
+    @POST("getVideos")
+     Observable<VideoListEntity> getVideos(
+            @Part("user_id") RequestBody user_id,
+            @Part("category") RequestBody category,
+            @Part("offset") RequestBody offset
+    );
+
+
     @Multipart
     @POST("getContentList")
     Observable<ContentEntityApiResponse> fetchContent(@Part("content_type") int contentType, @Part("offset") int offset);

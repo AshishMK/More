@@ -11,6 +11,9 @@ import com.example.more.data.local.dao.ContentDao;
 import com.example.more.data.local.entity.ContentEntity;
 import com.example.more.data.remote.api.ContentApiService;
 import com.example.more.data.remote.model.ContentEntityApiResponse;
+import com.example.more.data.remote.model.VideoEntity;
+import com.example.more.data.remote.model.VideoListEntity;
+import com.example.more.utills.RetrofitOkhttpUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +84,7 @@ public class ContentRepository {
             @NonNull
             @Override
             protected Flowable<List<ContentEntity>> loadFromDb() {
-                List<ContentEntity> movieEntities = (TextUtils.isEmpty(tag) ? (filter_starred ? contentDao.getContentByContentTypeWithStarred(content_type, offset == -1 ? 0 : offset,filter_starred) :contentDao.getContentByContentType(content_type, offset == -1 ? 0 : offset)) : (filter_starred ? contentDao.getContentByTagWithStarred(content_type, tag, offset == -1 ? 0 : offset,filter_starred):contentDao.getContentByTag(content_type, tag, offset == -1 ? 0 : offset)));
+                List<ContentEntity> movieEntities = (TextUtils.isEmpty(tag) ? (filter_starred ? contentDao.getContentByContentTypeWithStarred(content_type, offset == -1 ? 0 : offset, filter_starred) : contentDao.getContentByContentType(content_type, offset == -1 ? 0 : offset)) : (filter_starred ? contentDao.getContentByTagWithStarred(content_type, tag, offset == -1 ? 0 : offset, filter_starred) : contentDao.getContentByTag(content_type, tag, offset == -1 ? 0 : offset)));
                 if (movieEntities == null || movieEntities.isEmpty()) {
                     return Flowable.just(new ArrayList<>());
                 }
@@ -103,6 +106,75 @@ public class ContentRepository {
                                 ? Resource.error("", new ContentEntityApiResponse())
                                 : Resource.success(movieApiResponse)));
             }
+        }.getAsObservable();
+    }
+
+    /*
+     * We are using this method to fetch the content list
+     * NetworkBounlodResource is part of the Android architecture
+     * components. You will notice that this is a modified version of
+     * that class. That class is based on LiveData but here we are
+     * using Observable from RxJava.
+     *
+     * There are three methods called:
+     * a. fetch data from server
+     * b. fetch data from local
+     * c. save data from api in local
+     *
+     * So basically we fetch data from server, store it locally
+     * and then fetch data from local and update the UI with
+     * this data.
+     *
+     * */
+    public Observable<Resource<List<VideoEntity>>> getVideos(int mediaCategory, int offset) {
+        return new NetworkBoundResource<List<VideoEntity>, VideoListEntity>() {
+            @Override
+            protected void saveCallResult(@NonNull VideoListEntity item) {
+
+                contentDao.insertMediaList(item.data);
+            }
+
+            @Override
+            protected ContentDao getDAO() {
+                return contentDao;
+            }
+
+            @Override
+            protected boolean shouldFetch() {
+                return true;
+            }
+
+
+            //argument item just to return the response flowable
+            // you must retrieve data from databas if you are using database
+            @Override
+            protected Flowable<List<VideoEntity>> loadFromDb()//Resource<VideoListEntity> item)
+            {
+                List<VideoEntity> movieEntities =  contentDao.getMediaList(mediaCategory,offset);
+
+                if (movieEntities == null || movieEntities.isEmpty()) {
+                    return Flowable.just(new ArrayList<>());
+                }
+                else {
+                    System.out.println("chof db"+movieEntities.size());
+                    return Flowable.just(movieEntities);
+                }
+            }
+
+
+            @Override
+            public Observable<Resource<VideoListEntity>> createCall() {
+                return contentApiService.getVideos(
+                        RetrofitOkhttpUtil.getRequestBodyText(
+                                "1"
+                        ),
+                        RetrofitOkhttpUtil.getRequestBodyText("" + mediaCategory),
+                        RetrofitOkhttpUtil.getRequestBodyText("" + offset)
+                ).flatMap(movieApiResponse -> Observable.just(movieApiResponse == null
+                        ? Resource.error("", new VideoListEntity())
+                        : Resource.success(movieApiResponse)));
+            }
+
         }.getAsObservable();
     }
 }

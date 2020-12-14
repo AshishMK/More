@@ -2,9 +2,7 @@ package com.example.more.ui.fragment;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -147,9 +145,9 @@ public class WhatsappStatusFragment extends DaggerFragment implements StaggeredL
 
     @Override
     public void onDownloadClicked(WhatsAppStatus path) {
+        AlertDialogProvider.getInstance(getString(R.string.already_downloaded), String.format(getString(R.string.location), getString(R.string.app_name) + "/" + new File(path.path).getName()), AlertDialogProvider.TYPE_NORMAL,false)
+                .show(getChildFragmentManager(), WhatsappStatusFragment.class.getName());
         if (path.isDownloaded) {
-            AlertDialogProvider.getInstance(getString(R.string.already_downloaded), String.format(getString(R.string.location), getString(R.string.app_name) + "/" + new File(path.path).getName()), AlertDialogProvider.TYPE_NORMAL)
-                    .show(getChildFragmentManager(), WhatsappStatusFragment.class.getName());
             return;
         }
         ArrayList<WhatsAppStatus> temp = new ArrayList<>();

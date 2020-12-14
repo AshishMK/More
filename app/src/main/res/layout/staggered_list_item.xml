@@ -84,7 +84,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/guideline4"
                 app:layout_constraintTop_toTopOf="parent"
-                android:src="@{(content.isDownloaded ?@drawable/ic_info_outline_black_24dp : @drawable/ic_file_download_black_24dp)}" />
+                android:src="@{(content.isDownloaded ?@drawable/ic_outline_info_24 : @drawable/ic_file_download_black_24dp)}" />
 
             <ImageView
                 android:id="@+id/share"

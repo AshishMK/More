@@ -25,7 +25,7 @@ import com.example.more.BR;
 import com.example.more.R;
 import com.example.more.data.Status;
 import com.example.more.data.local.dao.ContentDao;
-import com.example.more.data.local.entity.ContentEntity;
+import com.example.more.data.remote.model.VideoEntity;
 import com.example.more.databinding.ListFragmentBinding;
 import com.example.more.factory.ViewModelFactory;
 import com.example.more.ui.activity.ListActivity;
@@ -43,7 +43,7 @@ import javax.inject.Inject;
 import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.DaggerFragment;
 
-import static com.example.more.ui.activity.ListActivity.FACT;
+import static com.example.more.ui.activity.ListActivity.ANIMAL;
 
 
 /**
@@ -52,7 +52,7 @@ import static com.example.more.ui.activity.ListActivity.FACT;
  * Note: We use Linear list for evey content type except meme contents.
  * for meme we use gris list
  *
- * @see com.example.more.ui.activity.ListActivity#FACT/
+ * @see com.example.more.ui.activity.ListActivity#ANIMAL /
  * Adapter @link {@link ContentListAdapter}
  * Activities that contain this fragment must implement the
  * {@link ListFragment.OnFragmentInteractionListener} interface
@@ -106,9 +106,9 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
 
     /**
      * Type of content for which this fragment show the data
-     * example {@link com.example.more.ui.activity.ListActivity#FACT}
+     * example {@link com.example.more.ui.activity.ListActivity#ANIMAL}
      */
-    public int content_type = FACT;
+    public int content_type = ANIMAL;
     ContentListAdapter contentListAdapter;
 
 
@@ -156,8 +156,6 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
      * */
     private void initialiseView(ViewGroup viewGroup) {
         binding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.fragment_list, viewGroup, false);
-
-
     }
 
 
@@ -190,7 +188,8 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
                         if ((visibleItemCount + pastVisiblesItems) >= totalItemCount - 3) {
                             loadMore = false;
                             //Do pagination.. i.e. fetch new data
-                            contentListViewModel.loadContentList(content_type, contentListAdapter.getItemCount() - 1, tag, false);
+                       getVideo();
+                            //     contentListViewModel.loadContentList(content_type, contentListAdapter.getItemCount() - 1, tag, false);
 
                         }
                     }
@@ -257,7 +256,7 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
             } else if (resource.data != null && resource.data.size() > 0) {
                 binding.setVariable(BR.status, Status.SUCCESS);
                 mListener.onFragmentStatus(resource.status);
-                updateContentList(resource.data, !loadMore, resource.status);
+                //updateContentList(resource.data, !loadMore, resource.status);
                 // request was successful but received items count is < 10 i.e. no more item to load
                 // so we disallow to send any more load more requests
                 if (resource.status == Status.SUCCESS && resource.data.size() < 10) {
@@ -267,7 +266,7 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
                     loadMore = false;
 
                 } else if (resource.status == Status.SUCCESS) {
-                    //loadMore = true;
+                    loadMore = true;
                 }
             } else if (resource.status == Status.ERROR) {
                 mListener.onFragmentStatus(resource.status);
@@ -287,8 +286,49 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
                 //mListener.onDataReceived();
             }
         });
+
+        contentListViewModel.getVideoLiveData().observe(this, resource -> {
+
+            if (resource.isLoading()) {
+                mListener.onFragmentStatus(Status.LOADING);
+                if (!loadMore)
+                    contentListAdapter.setStatus(Status.LOADING);
+                else {
+                    AnimUtil.rotateView(binding.loadingLayout.image);
+                    binding.setVariable(BR.status, Status.LOADING);}
+            } else if (resource != null) {
+                binding.setVariable(BR.status, Status.SUCCESS);
+                mListener.onFragmentStatus(Status.SUCCESS);
+                updateContentList(resource.data,!loadMore,resource.status);
+                if (contentListAdapter.getItemCount() == 0)
+                {
+                    if (!loadMore)
+                        contentListAdapter.setStatus(Status.NOT_FOUND);
+                    else
+                        binding.setVariable(BR.status, Status.NOT_FOUND);
+                }
+                loadMore = resource.data.size() >= 10;
+
+
+            } else {
+                mListener.onFragmentStatus(Status.ERROR);
+                if (!loadMore)
+                    contentListAdapter.setStatus(Status.ERROR);
+                else
+                    binding.setVariable(BR.status, Status.ERROR);
+            }
+            //handleErrorResponse()
+        });
+
+        getVideo();
         /* Fetch content list  */
-        contentListViewModel.loadContentList(content_type, -1, tag, false);
+        //contentListViewModel.loadContentList(content_type, -1, tag, false);
+    }
+
+    private void getVideo() {
+
+        contentListViewModel.getVideos(content_type, contentListAdapter.getItemCount());
+
     }
 
     /**
@@ -296,7 +336,7 @@ public class ListFragment extends DaggerFragment implements ListActivityHandler 
      *
      * @param contents
      */
-    private void updateContentList(List<ContentEntity> contents, boolean isFromLoadMore, Status status) {
+    private void updateContentList(List<VideoEntity> contents, boolean isFromLoadMore, Status status) {
         contentListAdapter.setItems(contents, isFromLoadMore, status);
     }
 

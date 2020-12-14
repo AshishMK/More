@@ -6,12 +6,15 @@
 
     <data class="OCRActivityBinding"/>
 
-    <LinearLayout
+    <FrameLayout
     android:id="@+id/topLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true">
-
+<SurfaceView
+    android:id="@+id/surface"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
     <com.example.more.utills.ui.camera.CameraSourcePreview
         android:id="@+id/preview"
         android:layout_width="match_parent"
@@ -23,5 +26,5 @@
             android:layout_height="match_parent" />
 
     </com.example.more.utills.ui.camera.CameraSourcePreview>
-</LinearLayout>
+</FrameLayout>
 </layout>

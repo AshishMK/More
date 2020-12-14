@@ -11,6 +11,7 @@ import androidx.room.Update;
 import com.example.more.data.local.entity.ContentEntity;
 import com.example.more.data.local.entity.NotificationEntity;
 import com.example.more.data.local.entity.SearchEntity;
+import com.example.more.data.remote.model.VideoEntity;
 
 import java.util.List;
 
@@ -19,6 +20,12 @@ public interface ContentDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long[] insertContents(List<ContentEntity> movies);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long[] insertMediaList(List<VideoEntity> list);
+
+    @Query("SELECT * FROM `VideoEntity` where category = :mediaCategory order by id desc  LIMIT 10 OFFSET :offset")
+    public List<VideoEntity> getMediaList(int mediaCategory, int offset);
 
     @Query("SELECT * FROM `ContentEntity` where contentType = :content_type order by id desc  LIMIT 10 OFFSET :offset")
     List<ContentEntity> getContentByContentType(int content_type, int offset);

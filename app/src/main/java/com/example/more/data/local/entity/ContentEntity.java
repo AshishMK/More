@@ -16,6 +16,7 @@ import com.google.gson.annotations.SerializedName;
 import timber.log.Timber;
 
 import static com.example.more.di.module.ApiModule.base_url;
+import static com.example.more.di.module.ApiModule.base_url_download;
 
 @Entity(primaryKeys = ("id"))
 public class ContentEntity implements Parcelable {
@@ -175,15 +176,30 @@ public class ContentEntity implements Parcelable {
 
     @BindingAdapter("profileImage")
     public static void loadImage(ImageView view, String imageUrl) {
-        Timber.v(imageUrl);
-        if (imageUrl != null && !imageUrl.contains(".")) {
+        Timber.v(base_url_download+imageUrl+".png");
+   /*     if (imageUrl != null && !imageUrl.contains(".")) {
             Glide.with(view.getContext())
                     .load("http://img.youtube.com/vi/" + imageUrl + "/0.jpg").apply(new RequestOptions().circleCrop())
                     .into(view);
             return;
-        }
+        }*/
         Glide.with(view.getContext())
-                .load(base_url + "tnt_file/" + imageUrl)
+                .load(imageUrl)
+                .apply(RequestOptions.circleCropTransform())
+                .into(view);
+    }
+
+    @BindingAdapter("profileImageThumb")
+    public static void loadImageThumb(ImageView view, String imageUrl) {
+        Timber.v(base_url_download+imageUrl+".png");
+   /*     if (imageUrl != null && !imageUrl.contains(".")) {
+            Glide.with(view.getContext())
+                    .load("http://img.youtube.com/vi/" + imageUrl + "/0.jpg").apply(new RequestOptions().circleCrop())
+                    .into(view);
+            return;
+        }*/
+        Glide.with(view.getContext())
+                .load(imageUrl)
                 .into(view);
     }
 }

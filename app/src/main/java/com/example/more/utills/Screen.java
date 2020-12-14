@@ -128,23 +128,23 @@ public class Screen {
         StateListDrawable stateListDrawable = new StateListDrawable() {
             @Override
             public boolean selectDrawable(int index) {
-                if (Build.VERSION.SDK_INT < 21) {
-                    Drawable drawable = getStateDrawable(this, index);
-                    ColorFilter colorFilter = null;
-                    if (drawable instanceof BitmapDrawable) {
-                        colorFilter = ((BitmapDrawable) drawable).getPaint().getColorFilter();
-                    } else if (drawable instanceof NinePatchDrawable) {
-                        colorFilter = ((NinePatchDrawable) drawable).getPaint().getColorFilter();
-                    }
-                    boolean result = super.selectDrawable(index);
-                    if (colorFilter != null) {
-                        drawable.setColorFilter(colorFilter);
-                    }
-                    return result;
-                }
-                return super.selectDrawable(index);
-            }
-        };
+//                if (Build.VERSION.SDK_INT < 21) {
+//                    Drawable drawable = getStateDrawable(this, index);
+//                    ColorFilter colorFilter = null;
+//                    if (drawable instanceof BitmapDrawable) {
+//                        colorFilter = ((BitmapDrawable) drawable).getPaint().getColorFilter();
+//                    } else if (drawable instanceof NinePatchDrawable) {
+//                        colorFilter = ((NinePatchDrawable) drawable).getPaint().getColorFilter();
+//                    }
+//                    boolean result = super.selectDrawable(index);
+//                    if (colorFilter != null) {
+//                        drawable.setColorFilter(colorFilter);
+//                    }
+//                    return result;
+//                }
+               return super.selectDrawable(index);
+           }
+      };
         stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, pressedDrawable);
         stateListDrawable.addState(new int[]{android.R.attr.state_selected}, pressedDrawable);
         stateListDrawable.addState(StateSet.WILD_CARD, defaultDrawable);

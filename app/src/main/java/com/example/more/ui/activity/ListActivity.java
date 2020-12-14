@@ -43,11 +43,12 @@ public class ListActivity extends AppCompatActivity implements ListFragment.OnFr
     /**
      * Types of Content
      */
-    final public static int FACT = 0;
-    final public static int QUOTE = 1;
-    final public static int STORY = 2;
-    final public static int MEDIA = 3;
-    final public static int OTD = 4; //on this day
+    final public static int ANIMAL = 0;
+    final public static int HUMAN = 1;
+    final public static int PICTURE = 2;
+    final public static int STORY = 3;
+    final public static int MEDIA = 4;
+    final public static int OTD = 5; //on this day
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +100,6 @@ public class ListActivity extends AppCompatActivity implements ListFragment.OnFr
         binding.title.setText(getTitle(getIntent().getIntExtra("content_type", 0)));
         binding.setVariable(BR.status, Status.LOADING);
         binding.setHandler(((ListFragment) getSupportFragmentManager().findFragmentById(R.id.listFragment)));
-
     }
 
     /**
@@ -110,11 +110,11 @@ public class ListActivity extends AppCompatActivity implements ListFragment.OnFr
      */
     public String getTitle(int content_type) {
         switch (content_type) {
-            case FACT:
+            case ANIMAL:
                 return getResources().getQuantityString(R.plurals.fact, 2);
-            case QUOTE:
+            case HUMAN:
                 return getResources().getQuantityString(R.plurals.quote, 2);
-            case STORY:
+            case PICTURE:
                 return getResources().getQuantityString(R.plurals.meme, 2);
             default:
                 return getResources().getQuantityString(R.plurals.media, 2);

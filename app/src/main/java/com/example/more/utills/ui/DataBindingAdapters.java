@@ -1,10 +1,19 @@
 package com.example.more.utills.ui;
 
 import androidx.databinding.BindingAdapter;
+
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+
 import androidx.core.app.ActivityCompat;
+
 import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.request.RequestOptions;
+
+import timber.log.Timber;
 
 public class DataBindingAdapters {
 
@@ -27,8 +36,21 @@ public class DataBindingAdapters {
         view.setImageDrawable(drawable);
     }
 
+
+    @BindingAdapter("profileImageNoQ")
+    public static void loadImageQ(ImageView view, String imageUrl) {
+        Timber.v(imageUrl);
+        Glide.with(view.getContext())
+                .load(imageUrl)
+                .apply(
+                        new RequestOptions().format(DecodeFormat.PREFER_ARGB_8888)
+                                .override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL)
+                )
+                .into(view);
+    }
+
     @BindingAdapter("android:src")
-    public static void setImageResource(ImageView imageView, int resource){
-        imageView.setImageDrawable(ActivityCompat.getDrawable(imageView.getContext(),resource));
+    public static void setImageResource(ImageView imageView, int resource) {
+        imageView.setImageDrawable(ActivityCompat.getDrawable(imageView.getContext(), resource));
     }
 }

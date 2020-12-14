@@ -145,8 +145,8 @@ public class CameraSource {
     // These instances need to be held onto to avoid GC of their underlying resources.  Even though
     // these aren't used outside of the method that creates them, they still must have hard
     // references maintained to them.
-    private SurfaceView mDummySurfaceView;
-    private SurfaceTexture mDummySurfaceTexture;
+    public SurfaceView mDummySurfaceView;
+    public SurfaceTexture mDummySurfaceTexture;
 
     /**
      * Dedicated thread and associated runnable for calling into the detector with frames, as the

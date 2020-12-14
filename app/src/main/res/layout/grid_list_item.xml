@@ -13,7 +13,7 @@
 
         <variable
             name="content"
-            type="com.example.more.data.local.entity.ContentEntity" />
+            type="com.example.more.data.remote.model.VideoEntity" />
 
     </data>
 
@@ -37,13 +37,14 @@
             android:scaleType="centerCrop"
             android:layout_gravity="center"
             android:onClick="@{ ()-> contentViewHolder.onItemClick(content)}"
-            app:profileImage="@{content.media_link}" />
+            app:profileImage="@{content.url}" />
+        <!--android:checked="@{content.starred}"-->
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/starred"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:button="@drawable/star_checkbox"
-            android:checked="@{content.starred}"
+
             android:onCheckedChanged="@{contentViewHolder::onStarredChanged}"
             android:layout_gravity="right"
             />

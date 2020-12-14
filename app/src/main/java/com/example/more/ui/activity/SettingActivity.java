@@ -52,6 +52,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     /*
+
      * Initialising the View using Data Binding
      * */
     private void initialiseView() {

@@ -46,9 +46,9 @@ public class HomeActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Utils.buildRewardedAd(HomeActivity.this);
+           //     Utils.buildRewardedAd(HomeActivity.this);
             }
-        }, 1000);
+        }, 3000);
         Utils.buildBannerAD(binding.includedLayout.adView);
     }
 
@@ -119,4 +119,6 @@ public class HomeActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

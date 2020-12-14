@@ -11,7 +11,7 @@
         <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             ads:adSize="BANNER"
             ads:adUnitId="@string/ADMOB_APP_BANNER_ID"
             ads:layout_constraintLeft_toLeftOf="parent"
@@ -33,7 +33,6 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="24dp"
             app:layout_constraintBottom_toTopOf="@+id/tabLayout"
             app:layout_constraintTop_toBottomOf="@+id/adView"
             app:layout_constraintTop_toTopOf="parent" />

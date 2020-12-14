@@ -6,6 +6,7 @@ import com.example.more.Application.AppController;
 import com.example.more.di.module.ActivityModule;
 import com.example.more.di.module.ApiModule;
 import com.example.more.di.module.DbModule;
+import com.example.more.di.module.ExoPlayerModule;
 import com.example.more.di.module.FragmentModule;
 import com.example.more.di.module.ServiceModule;
 import com.example.more.di.module.ToolsModule;
@@ -29,6 +30,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
 @Component(modules = {
         ApiModule.class,
         DbModule.class,
+        ExoPlayerModule.class,
         ViewModelModule.class,
         ActivityModule.class,
         FragmentModule.class,

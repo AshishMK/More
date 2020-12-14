@@ -28,10 +28,14 @@ import android.content.pm.PackageManager;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+
 import android.hardware.Camera;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -76,8 +80,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     // Helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
     private GestureDetector gestureDetector;
-
-
     /*
      * I am using DataBinding
      * */
@@ -90,7 +92,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         initialiseView();
-
         // read parameters from the intent used to launch the activity.
         boolean autoFocus = getIntent().getBooleanExtra(AutoFocus, false);
         boolean useFlash = getIntent().getBooleanExtra(UseFlash, false);
@@ -206,6 +207,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         mCameraSource =
                 new CameraSource.Builder(getApplicationContext(), textRecognizer)
                         .setFacing(CameraSource.CAMERA_FACING_BACK)
+
                         .setRequestedPreviewSize(1280, 1024)
                         .setRequestedFps(2.0f)
                         .setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : null)
@@ -410,12 +412,13 @@ public final class OcrCaptureActivity extends AppCompatActivity {
             mCameraSource.doZoom(detector.getScaleFactor());
         }
     }
-public static Intent getInstance(Context ctx){
-    Intent intent = new Intent(ctx, OcrCaptureActivity.class);
-    intent.putExtra(OcrCaptureActivity.AutoFocus, true);
-    intent.putExtra(OcrCaptureActivity.UseFlash, false);
 
-    return intent;
-}
+    public static Intent getInstance(Context ctx) {
+        Intent intent = new Intent(ctx, OcrCaptureActivity.class);
+        intent.putExtra(OcrCaptureActivity.AutoFocus, true);
+        intent.putExtra(OcrCaptureActivity.UseFlash, false);
+
+        return intent;
+    }
 
 }

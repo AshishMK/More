@@ -5,19 +5,24 @@ import android.os.Handler;
 import android.transition.Slide;
 import android.transition.Visibility;
 import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 
 import com.example.more.R;
 import com.example.more.databinding.FacebookActivityBinding;
 import com.example.more.ui.fragment.FacebookFragment;
+import com.example.more.utills.Screen;
 import com.example.more.utills.Utils;
+import com.google.android.material.appbar.AppBarLayout;
 
 /**
  * Activity host {@link FacebookFragment} to download facebook videos
  *
- * @see also {@link DownloadManagerActivity}
+ * @see  {@link DownloadManagerActivity}
  */
 public class FacebookActivity extends AppCompatActivity {
     /*
@@ -44,7 +49,7 @@ public class FacebookActivity extends AppCompatActivity {
                 Utils.buildInterstitialAd(FacebookActivity.this);
             }
         },1000);
-        Utils.buildBannerAD(binding.adView);
+        //Utils.buildBannerAD(binding.adView);
     }
 
     @Override
@@ -64,6 +69,27 @@ public class FacebookActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.title.setText(R.string.facebook);
         fragment = ((FacebookFragment) getSupportFragmentManager().findFragmentById(R.id.facebookFragment));
+        binding.nsv.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                fragment.binding.webView.onTouchEvent(event);
+                return false;
+            }
+        });
+
+        binding.appBar.addOnOffsetChangedListener(new AppBarLayout.BaseOnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
+                System.out.println("kuku "+ (i<-80)+" "+i+" "+(Screen.dp(80)+i));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                       binding.container.setPadding(0,Screen.dp(80)+i,0,0);;
+                    }
+                });
+
+            }
+        });
     }
 
     @Override

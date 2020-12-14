@@ -28,10 +28,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Module
 public class ApiModule {
-    public static final String base_url = "http://indianmessenger.in:3040/";
-
+    public static final String base_url = "http://134.209.155.176:4080/";
+    public static final String  base_url_download = base_url + "get_file/";
     /**
-     * The method returns the {@link RxFetchobject}
+     * The method returns the {@link }
      *
      * @return
      */
@@ -49,6 +49,10 @@ public class ApiModule {
     @Provides
     @Singleton
     FetchConfiguration provideFetchConfiguration(Application application){
+        /*FetchConfiguration fetchConfiguration = new FetchConfiguration.Builder(this)
+                .setDownloadConcurrentLimit(3)
+                .build();*/
+
         return new FetchConfiguration.Builder(application).build();
     }
 

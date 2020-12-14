@@ -29,13 +29,12 @@
             app:layout_constraintBottom_toTopOf="@+id/guideline2" />
 
 
-
         <ImageView
 
             android:id="@+id/logo_fact"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginBottom="24sp"
+            android:layout_marginBottom="24dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:onClick="@{ (isToolFragment ? handler::onClickViewTools :  handler::onClickView)}"
             android:src="@{isToolFragment ? @drawable/barcode : @drawable/fact}"
@@ -64,8 +63,8 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginBottom="24dp"
-            android:onClick="@{ (isToolFragment ? handler::onClickViewTools :  handler::onClickView)}"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:onClick="@{ (isToolFragment ? handler::onClickViewTools :  handler::onClickView)}"
             android:src="@{isToolFragment ? @drawable/img_txt : @drawable/quote}"
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintLeft_toRightOf="@+id/guideline"
@@ -121,6 +120,7 @@
             android:layout_height="120dp"
             android:layout_marginBottom="24dp"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:longClickable="true"
             android:onClick="@{ (isToolFragment ? handler::onClickViewTools :  handler::onClickView)}"
             android:src="@{isToolFragment ? @drawable/facebook : @drawable/movie}"
             app:layout_constraintBottom_toBottomOf="parent"

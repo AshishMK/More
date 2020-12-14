@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data class="SettingActivityBinding">
+        <import type="com.example.more.utills.Utils" />
 
         <variable
             name="preferenceStorage"
-            type="com.example.more.data.local.pref.PreferencesStorage" />
+            type="com.example.more.data.local.pref.SharedPrefStorage" />
 
     </data>
 
@@ -68,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center_vertical"
                     android:layout_marginTop="14dp"
-                    android:checked="@{ (Boolean)preferenceStorage.readValue(@string/status_notification,true)}"
+                    android:checked="@{((Boolean)preferenceStorage.readValue(@string/status_notification,true))}"
                     android:onCheckedChanged="@{(switch, checked) -> preferenceStorage.writeValue(@string/status_notification,checked)}"
                     android:layout_marginRight="16dp"
                     android:button="@drawable/custom_checkbox"

@@ -7,7 +7,7 @@
 
         <variable
             name="preferenceStorage"
-            type="com.example.more.data.local.pref.PreferencesStorage" />
+            type="com.example.more.data.local.pref.SharedPrefStorage" />
 
         <variable
             name="settingsHandler"

@@ -159,14 +159,14 @@ public class DownloadManagerActivity extends AppCompatActivity implements DMList
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, 0, 0, "info").setIcon(ActivityCompat.getDrawable(this, R.drawable.ic_info_outline_black_24dp)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(0, 0, 0, "info").setIcon(ActivityCompat.getDrawable(this, R.drawable.ic_outline_info_24)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == 0) {
-            AlertDialogProvider.getInstance(getString(R.string.download_location), String.format(getString(R.string.whats_app_head_message), getString(R.string.app_name) + " directory"), AlertDialogProvider.TYPE_NORMAL)
+            AlertDialogProvider.getInstance(getString(R.string.download_location), String.format(getString(R.string.whats_app_head_message), getString(R.string.app_name) + " directory"), AlertDialogProvider.TYPE_NORMAL,false)
                     .show(getSupportFragmentManager(), WhatsAppStatusActivity.class.getName());
             return true;
 

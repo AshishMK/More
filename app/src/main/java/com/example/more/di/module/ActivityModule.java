@@ -5,8 +5,10 @@ import com.example.more.ui.activity.DownloadManagerActivity;
 import com.example.more.ui.activity.HomeActivity;
 import com.example.more.ui.activity.ListActivity;
 import com.example.more.ui.activity.MemePagerActivity;
+import com.example.more.ui.activity.PlayerActivity;
 import com.example.more.ui.activity.SearchActivity;
 import com.example.more.ui.activity.SettingActivity;
+import com.example.more.ui.activity.ShowImagePlayVideoActivity;
 import com.example.more.ui.activity.WhatsAppStatusActivity;
 
 import dagger.Module;
@@ -17,6 +19,11 @@ import dagger.android.ContributesAndroidInjector;
  */
 @Module
 public abstract class ActivityModule {
+    @ContributesAndroidInjector()
+    abstract PlayerActivity contributePlayerActivity();
+
+    @ContributesAndroidInjector()
+    abstract ShowImagePlayVideoActivity contributeShowImagePlayVideoActivity();
 
     @ContributesAndroidInjector()
     abstract ListActivity contributeMainActivity();
